@@ -9,6 +9,7 @@ typedef enum e_status {
     OCCUPIED,
     DOMED,
     INVALIDACTION,
+    FREEWORKER,
     _UNUSED // add new status above this always ^^^
 
 }           t_status;
