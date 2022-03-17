@@ -6,6 +6,9 @@ all:
 run:
 	@make run -C client
 
+test:
+	@make test -C client
+
 clean:
 	@make clean -C client
 
