@@ -18,13 +18,16 @@ CC:=gcc -std=c11
 
 .PHONY: $(TARGET) all clean fclean re
 
-all: $(TARGET)
+all: $(TARGET) run
 
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(TARGET): $(OBJECTS)
 	$(CC) $(CFLAGS) -o $@ $(OBJECTS) $(LDFLAGS)
+
+run:
+	./$(TARGET)
 
 clean:
 	rm -f $(OBJECTS)
