@@ -9,6 +9,8 @@ void game_controller_init(t_game_controller *game_controller) {
 
 void game_data_init(t_game_data *data) {
 	board_reset(data->board);
+	player_reset(&data->players[0]);
+	player_reset(&data->players[1]);
 }
 
 void render(t_cell (*board)[BOARD_SIZE], t_pos *cursor, uint8_t player) {
@@ -16,6 +18,27 @@ void render(t_cell (*board)[BOARD_SIZE], t_pos *cursor, uint8_t player) {
 	draw_board(board);
 	draw_player_cursor(cursor->x, cursor->y, player);
     refresh();
+}
+
+void handle_select(t_game_controller *game_controller, t_game_data *game_data) {
+	switch (game_controller->stage) {
+		case G_INIT: {
+			// place player
+			break;
+		}
+		case G_MOVE {
+			//move pleayer
+			break;
+		}
+		case G_BUILD {
+			//build
+			break;
+		}
+		default: {
+			printf("GAME END\n");
+			break;
+		}
+	}
 }
 
 void game_loop() {
@@ -58,6 +81,10 @@ void game_loop() {
 				break;
 			}
 
+			case ' ': {
+
+			}
+ 
 			default:
 				break;
 		}

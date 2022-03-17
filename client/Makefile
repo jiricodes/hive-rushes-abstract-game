@@ -1,9 +1,13 @@
 SOURCE_FILES=	board.c \
-			main.c \
-			colors.c \
-			draw_entity.c \
-			game.c \
-			controller.c
+				colors.c \
+				controller.c \
+				draw.c \
+				draw_entity.c \
+				game.c \
+				main.c \
+				player.c \
+				position.c \
+				state.c
 
 SOURCE_DIR=src
 SOURCES=$(addprefix $(SOURCE_DIR)/,$(SOURCE_FILES))
@@ -19,6 +23,8 @@ CC:=gcc -std=c11
 .PHONY: $(TARGET) all clean fclean re
 
 all: $(TARGET) run
+
+build: $(TARGET)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $<

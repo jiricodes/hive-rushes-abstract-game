@@ -3,7 +3,7 @@
 
 # include <ncurses.h>
 
-# define C_PLAYER(x) (x == 1 ? COLOR_PAIR(4): COLOR_PAIR(5))
+# define C_PLAYER(x) (x == 0 ? COLOR_PAIR(4): COLOR_PAIR(5))
 
 int colors_init();
 

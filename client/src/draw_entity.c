@@ -61,3 +61,19 @@ void draw_player_cursor(int x, int y, uint8_t player) {
     attron(A_STANDOUT);
     attroff(C_PLAYER(player));
 }
+
+void draw_player(int x, int y, uint8_t player) {
+	y = y * D_CELL_SIZE + (y + 1) * D_MARGIN;
+    x = x * D_CELL_SIZE + (x + 1) * D_MARGIN;
+	y += D_CELL_SIZE / 2;
+	x += D_CELL_SIZE / 2;
+	attron(C_PLAYER(player));
+    attron(A_STANDOUT);
+	for (int i=y; i < y + D_PLAYER_SIZE; i++) {
+       for (int j=x; j < x + D_PLAYER_SIZE; j++) {
+           mvaddch(i, j, ' ');
+       } 
+    }
+	attron(A_STANDOUT);
+    attroff(C_PLAYER(player));
+}

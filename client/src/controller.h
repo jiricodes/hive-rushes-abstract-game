@@ -2,6 +2,7 @@
 # define CONTROLLER_H
 
 #include "board.h"
+#include "position.h"
 
 void cursor_left(t_pos *cursor);
 void cursor_right(t_pos *cursor);
