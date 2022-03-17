@@ -1,16 +1,45 @@
-.PHONY: all run clean fclean re
+SOURCE_FILES=	board.c \
+				colors.c \
+				controller.c \
+				draw.c \
+				draw_entity.c \
+				game.c \
+				main.c \
+				player.c \
+				position.c \
+				state.c \
+				status.c
 
-all:
-	@make -C client
+SOURCE_DIR=src
+SOURCES=$(addprefix $(SOURCE_DIR)/,$(SOURCE_FILES))
+OBJECTS=$(SOURCES:.c=.o)
+
+TARGET := santorini-client
+
+CFLAGS := -I./$(SOURCE_DIR) -O3
+LDFLAGS := -lncurses
+
+CC:=gcc -std=c11
+
+.PHONY: $(TARGET) all clean fclean re
+
+all: $(TARGET) run
+
+build: $(TARGET)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(TARGET): $(OBJECTS)
+	$(CC) $(CFLAGS) -o $@ $(OBJECTS) $(LDFLAGS)
 
 run:
-	@make run -C client
+	./$(TARGET)
 
 clean:
-	@make clean -C client
+	rm -f $(OBJECTS)
 
-fclean:
-	@make fclean -C client
+fclean: clean
+	rm -f $(TARGET)
 
-re:
-	@make re -C client
+re: fclean all
