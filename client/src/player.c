@@ -2,14 +2,13 @@
 
 void player_reset(t_player *player) {
 	for (int i = 0; i < P_SLOTS; i++) {
-		player->positions[i].x = P_INIT_POS;
-		player->positions[i].y = P_INIT_POS;
+		position_none(&player->positions[i]);
 	}
 }
 
 int player_place(t_player *player, t_pos *pos) {
 	for (int i = 0; i < P_SLOTS; i++) {
-		if (player->positions[i].x == P_INIT_POS && player->positions[i].y == P_INIT_POS) {
+		if (position_is_none(&player->positions[i])) {
 			player->positions[i].x = pos->x;
 			player->positions[i].y = pos->y;
 			return (OKAY);
@@ -20,7 +19,7 @@ int player_place(t_player *player, t_pos *pos) {
 
 int player_all_placed(t_player *player) {
 	for (int i = 0; i < P_SLOTS; i++) {
-		if (player->positions[i].x == P_INIT_POS && player->positions[i].y == P_INIT_POS) {
+		if (position_is_none(&player->positions[i])) {
 			return (FREEWORKER);
 		}
 	}
@@ -34,4 +33,24 @@ void player_print(t_player *player) {
 		position_print(&player->positions[i]);
 	}
 	printf("}\n");
+}
+
+int player_position_at(t_player *player, t_pos *pos) {
+	for (int i = 0; i < P_SLOTS; i++) {
+		if (player->positions[i].x == pos->x && player->positions[i].y == pos->y) {
+			return (1);
+		}
+	}
+	return (0);
+}
+
+t_status player_move_to(t_player *player, t_pos *from, t_pos *pos) {
+	for (int i = 0; i < P_SLOTS; i++) {
+		if (player->positions[i].x == from->x && player->positions[i].y == from->y) {
+			player->positions[i].x = pos->x;
+			player->positions[i].y = pos->y;
+			return (OKAY);
+		}
+	}
+	return (INVALIDACTION);
 }

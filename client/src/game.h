@@ -15,6 +15,7 @@
 typedef struct s_game_controller {
 	t_stage stage;
 	t_pos	cursor;
+	t_pos	selected;
 	uint8_t player;
 }					t_game_controller;
 

@@ -5,6 +5,7 @@ void game_controller_init(t_game_controller *game_controller) {
 	game_controller->stage = G_INIT;
 	position_zero(&game_controller->cursor);
 	game_controller->player = 0;
+	position_none(&game_controller->selected);
 }
 
 void game_data_init(t_game_data *data) {
@@ -29,7 +30,7 @@ void handle_init(t_game_controller *game_controller, t_game_data *game_data) {
 		printf("Couldn't place worker\n");
 		return;
 	}
-	ret =player_place(&game_data->players[game_controller->player], &game_controller->cursor);
+	ret = player_place(&game_data->players[game_controller->player], &game_controller->cursor);
 	if (ret != OKAY) {
 		printf("Couldn't place player\n");
 		return;
@@ -42,11 +43,51 @@ void handle_init(t_game_controller *game_controller, t_game_data *game_data) {
 	}
 	// Last player placed workers, move to next stage
 	if (game_controller->player == MAX_PLAYERS - 1) {
-		game_controller->stage = G_MOVE;
+		game_controller->stage = G_MOVE_SELECT;
 	}
 	// This works only with 2 players currently
 	switch_player(&game_controller->player);
 	return ;
+}
+
+void handle_move_select(t_game_controller *game_controller, t_game_data *game_data) {
+	if (player_position_at(&game_data->players[game_controller->player], &game_controller->cursor)) {
+		int res = position_toggle(&game_controller->selected, &game_controller->cursor);
+		if (res == 1) {
+			game_controller->stage = G_MOVE;
+		}
+	}
+}
+
+void handle_move(t_game_controller *game_controller, t_game_data *game_data) {
+	if (player_position_at(&game_data->players[game_controller->player], &game_controller->cursor)) {
+		int res = position_toggle(&game_controller->selected, &game_controller->cursor);
+		if (res == -1) {
+			game_controller->stage = G_MOVE_SELECT;
+			return ;
+		}
+	}
+	/// naive
+	t_status ret = board_place_player(game_data->board, &game_controller->cursor, game_controller->player);
+	if (ret != OKAY) {
+		return ;
+	}
+	ret = board_set_cell_empty(game_data->board, &game_controller->selected);
+	assert(ret == OKAY);
+	ret = player_move_to(&game_data->players[game_controller->player], &game_controller->selected,&game_controller->cursor);
+	assert(ret == OKAY);
+	/// Switch to build stage
+	game_controller->stage = G_BUILD;
+	/// clear selection
+	position_none(&game_controller->selected);
+}
+
+void handle_build(t_game_controller *game_controller, t_game_data *game_data) {
+	t_status ret = board_build_at(game_data->board, &game_controller->cursor);
+	if (ret == OKAY) {
+		game_controller->stage = G_MOVE_SELECT;
+		switch_player(&game_controller->player);
+	}
 }
 
 void handle_select(t_game_controller *game_controller, t_game_data *game_data) {
@@ -55,12 +96,17 @@ void handle_select(t_game_controller *game_controller, t_game_data *game_data) {
 			handle_init(game_controller, game_data);
 			break;
 		}
+		case G_MOVE_SELECT: {
+			//select player's worker to move
+			handle_move_select(game_controller, game_data);
+			break;
+		}
 		case G_MOVE: {
-			//move pleayer
+			handle_move(game_controller, game_data);
 			break;
 		}
 		case G_BUILD: {
-			//build
+			handle_build(game_controller, game_data);
 			break;
 		}
 		default: {

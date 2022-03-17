@@ -15,7 +15,7 @@ static void test_board() {
     assert(ret == OKAY);
     fflush(stdout);
     assert(cell->level == 0 && cell->player == -1);
-    ret = board_build_at(board, 0, 0);
+    ret = board_build_at(board, &pos);
     assert(ret == OKAY);
     assert(cell->level == 1 && cell->player == -1);
     ret = board_place_player(board, &pos, 1);
@@ -47,7 +47,7 @@ static void test_handle_init() {
     game_controller.cursor.x = 3;
     handle_init(&game_controller, &game_data);
     player_print(&game_data.players[1]);
-    board_print(&game_data.board);
+    board_print(game_data.board);
     printf("State: %d\n", game_controller.stage);
     fflush(stdout);
     printf("Done\n");
