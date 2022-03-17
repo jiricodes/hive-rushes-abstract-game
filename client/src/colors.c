@@ -1,4 +1,5 @@
 # include "colors.h"
+
 int colors_init() {
     use_default_colors();
     start_color();

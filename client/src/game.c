@@ -2,9 +2,8 @@
 
 void game_controller_init(t_game_controller *game_controller) {
 	game_controller->stage = G_INIT;
-	game_controller->cursor.x = 0;
-	game_controller->cursor.y = 0;
-	game_controller->player = 1;
+	position_zero(&game_controller->cursor);
+	game_controller->player = 0;
 }
 
 void game_data_init(t_game_data *data) {
@@ -26,11 +25,11 @@ void handle_select(t_game_controller *game_controller, t_game_data *game_data) {
 			// place player
 			break;
 		}
-		case G_MOVE {
+		case G_MOVE: {
 			//move pleayer
 			break;
 		}
-		case G_BUILD {
+		case G_BUILD: {
 			//build
 			break;
 		}
@@ -88,6 +87,7 @@ void game_loop() {
 			default:
 				break;
 		}
+		// Add check for win / loose
         render(game_data.board, &game_controller.cursor, game_controller.player);
     }
 }

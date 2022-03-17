@@ -7,7 +7,8 @@ SOURCE_FILES=	board.c \
 				main.c \
 				player.c \
 				position.c \
-				state.c
+				state.c \
+				status.c
 
 SOURCE_DIR=src
 SOURCES=$(addprefix $(SOURCE_DIR)/,$(SOURCE_FILES))

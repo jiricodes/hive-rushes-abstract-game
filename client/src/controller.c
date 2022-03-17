@@ -25,5 +25,5 @@ void cursor_down(t_pos *cursor) {
 }
 
 void switch_player(uint8_t *player) {
-	*player = *player == 1 ? 2 : 1;
+	*player = !*player;
 }

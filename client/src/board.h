@@ -5,22 +5,18 @@
 # include <stdlib.h>
 # include <inttypes.h>
 
+#include "status.h"
+#include "position.h"
+
 # define BOARD_SIZE 5
 
-typedef enum e_board_status {
-    B_OK,
-    B_OUTOFBOUNDS,
-    B_OCCUPIED,
-    B_DOMED
-}   t_board_status;
-
 typedef struct s_cell {
-    uint8_t player;
-    uint8_t level;
+    int8_t player; // -1 - empty, else N - player N
+    int8_t level;
 }               t_cell;
 
 void board_reset(t_cell (*board)[BOARD_SIZE]);
 void board_print(t_cell (*board)[BOARD_SIZE]);
-t_board_status board_build_at(t_cell (*board)[BOARD_SIZE], uint8_t row, uint8_t col);
+t_status board_build_at(t_cell (*board)[BOARD_SIZE], uint8_t row, uint8_t col);
 
 #endif

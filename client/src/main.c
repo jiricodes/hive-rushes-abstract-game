@@ -1,5 +1,3 @@
-# include "board.h"
-# include <assert.h>
 # include <ncurses.h>
 
 # include "colors.h"
@@ -7,6 +5,7 @@
 
 int main() {
 
+    // Ncureses init
     initscr();
     if (!has_colors()) {
         endwin();
@@ -19,11 +18,14 @@ int main() {
     cbreak();
     keypad(stdscr, TRUE);
 
+    // Init colors
     colors_init();
     curs_set(0);
 
+    // Enter game loop
     game_loop();
 
+    // Cleanup
     endwin();
 
     return 0;
