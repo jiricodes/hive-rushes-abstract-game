@@ -1,4 +1,5 @@
 #include "game.h"
+#include "assert.h"
 
 void game_controller_init(t_game_controller *game_controller) {
 	game_controller->stage = G_INIT;
@@ -19,10 +20,39 @@ void render(t_cell (*board)[BOARD_SIZE], t_pos *cursor, uint8_t player) {
     refresh();
 }
 
+void handle_init(t_game_controller *game_controller, t_game_data *game_data) {
+	t_status ret = OKAY;
+	printf("Handle init\n");
+	ret = board_place_player(game_data->board, &game_controller->cursor, game_controller->player);
+	/// Couldnt place worker for some reason, repeat
+	if (ret != OKAY) {
+		printf("Couldn't place worker\n");
+		return;
+	}
+	ret =player_place(&game_data->players[game_controller->player], &game_controller->cursor);
+	if (ret != OKAY) {
+		printf("Couldn't place player\n");
+		return;
+	}
+	ret = player_all_placed(&game_data->players[game_controller->player]);
+	// If current player has free worker, continue placing
+	if (ret == FREEWORKER) {
+		printf("Have free worker\n");
+		return;
+	}
+	// Last player placed workers, move to next stage
+	if (game_controller->player == MAX_PLAYERS - 1) {
+		game_controller->stage = G_MOVE;
+	}
+	// This works only with 2 players currently
+	switch_player(&game_controller->player);
+	return ;
+}
+
 void handle_select(t_game_controller *game_controller, t_game_data *game_data) {
 	switch (game_controller->stage) {
 		case G_INIT: {
-			// place player
+			handle_init(game_controller, game_data);
 			break;
 		}
 		case G_MOVE: {
@@ -50,6 +80,13 @@ void game_loop() {
 	render(game_data.board, &game_controller.cursor, game_controller.player);
     int ch = 0;
     while ((ch = getch())) {
+		if (ch == 27 ) {
+			int c = getch();
+			if (c == -1)
+				ch = KEY_EXIT;
+		} else if (ch == 'q' || ch == 'Q') {
+			ch = KEY_EXIT;
+		}
         if (ch == KEY_EXIT) {
             break ;
         }
@@ -81,13 +118,17 @@ void game_loop() {
 			}
 
 			case ' ': {
-
+				handle_select(&game_controller, &game_data);
+				break;
 			}
  
 			default:
 				break;
 		}
-		// Add check for win / loose
-        render(game_data.board, &game_controller.cursor, game_controller.player);
+		// No need to do any updates if no user input
+		if (ch != -1) {
+			// Add check for win / loose
+			render(game_data.board, &game_controller.cursor, game_controller.player);
+		}
     }
 }

@@ -17,6 +17,10 @@ void cell_set_empty(t_cell *cell) {
     cell->player = -1;
 }
 
+int8_t cell_occupied(t_cell *cell) {
+    return (cell->player >= 0);
+}
+
 void board_reset(t_cell (*board)[BOARD_SIZE]) {
     for (int r=0; r < BOARD_SIZE; r++) {
         for (int c=0; c < BOARD_SIZE; c++) {
@@ -30,7 +34,7 @@ void board_print(t_cell (*board)[BOARD_SIZE]) {
     for (int r=0; r < BOARD_SIZE; r++) {
         for (int c=0; c < BOARD_SIZE; c++) {
             char cc = 'E';
-            if (board[r][c].player) {
+            if (board[r][c].player >= 0) {
                 cc = board[r][c].player + 48;
             }
             if (board[r][c].level >= 4) {
@@ -104,4 +108,26 @@ int boar_check_win(t_cell (*board)[BOARD_SIZE]) {
     //  return cell.occupied
     // else
     //  return -1
+}
+
+t_status board_get_cell(t_cell (*board)[BOARD_SIZE], t_pos *pos, t_cell **cell) {
+    t_status ret = position_bounds_check(pos, BOARD_SIZE);
+    if (ret != OKAY) {
+        return (ret);
+    }
+    *cell = &board[pos->y][pos->x];
+    return (OKAY);
+}
+
+t_status board_place_player(t_cell (*board)[BOARD_SIZE], t_pos *pos, int8_t player) {
+    t_cell *cell = NULL;
+    t_status ret = board_get_cell(board, pos, &cell);
+    if (ret != OKAY) {
+        return (ret);
+    }
+    if (cell_occupied(cell)) {
+        return (OCCUPIED);
+    }
+    cell_set_player(cell, player);
+    return(OKAY);
 }

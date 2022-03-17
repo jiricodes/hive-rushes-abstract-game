@@ -12,4 +12,8 @@ typedef struct s_player {
 }   t_player;
 
 void player_reset(t_player *player);
+int player_place(t_player *player, t_pos *pos);
+int player_all_placed(t_player *player);
+void player_print(t_player *player);
+
 #endif

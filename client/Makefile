@@ -4,26 +4,32 @@ SOURCE_FILES=	board.c \
 				draw.c \
 				draw_entity.c \
 				game.c \
-				main.c \
 				player.c \
 				position.c \
 				state.c \
 				status.c
 
-SOURCE_DIR=src
-SOURCES=$(addprefix $(SOURCE_DIR)/,$(SOURCE_FILES))
-OBJECTS=$(SOURCES:.c=.o)
+TEST_FILES:=$(SOURCE_FILES) test.c
+SOURCE_FILES += main.c
+
+
+SOURCE_DIR:=src
+SOURCES:=$(addprefix $(SOURCE_DIR)/,$(SOURCE_FILES))
+OBJECTS:=$(SOURCES:.c=.o)
+TEST_SOURCES:=$(addprefix $(SOURCE_DIR)/,$(TEST_FILES))
+TEST_OBJECTS:=$(TEST_SOURCES:.c=.o)
 
 TARGET := santorini-client
+TEST_TARGET:=unittest
 
 CFLAGS := -I./$(SOURCE_DIR) -O3
 LDFLAGS := -lncurses
 
 CC:=gcc -std=c11
 
-.PHONY: $(TARGET) all clean fclean re
+.PHONY: $(TARGET) all clean fclean re $(TEST_TARGET)
 
-all: $(TARGET) run
+all: test run
 
 build: $(TARGET)
 
@@ -33,8 +39,14 @@ build: $(TARGET)
 $(TARGET): $(OBJECTS)
 	$(CC) $(CFLAGS) -o $@ $(OBJECTS) $(LDFLAGS)
 
-run:
+run: $(TARGET)
 	./$(TARGET)
+
+$(TEST_TARGET): $(TEST_OBJECTS)
+	$(CC) $(CFLAGS) -o $(TEST_TARGET) $(TEST_OBJECTS) $(LDFLAGS)
+
+test: $(TEST_TARGET)
+	./$(TEST_TARGET)
 
 clean:
 	rm -f $(OBJECTS)
@@ -43,3 +55,6 @@ fclean: clean
 	rm -f $(TARGET)
 
 re: fclean all
+
+print:
+	echo "$(TEST_FILES)"

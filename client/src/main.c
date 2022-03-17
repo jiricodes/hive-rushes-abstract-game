@@ -13,7 +13,7 @@ int main() {
         return 1;
     }
 
-    // timeout(30);
+    timeout(1);
     noecho();
     cbreak();
     keypad(stdscr, TRUE);

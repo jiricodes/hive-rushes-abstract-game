@@ -18,5 +18,7 @@ typedef struct s_cell {
 void board_reset(t_cell (*board)[BOARD_SIZE]);
 void board_print(t_cell (*board)[BOARD_SIZE]);
 t_status board_build_at(t_cell (*board)[BOARD_SIZE], uint8_t row, uint8_t col);
+t_status board_get_cell(t_cell (*board)[BOARD_SIZE], t_pos *pos, t_cell **cell);
+t_status board_place_player(t_cell (*board)[BOARD_SIZE], t_pos *pos, int8_t player);
 
 #endif
