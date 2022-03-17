@@ -49,10 +49,10 @@ test: $(TEST_TARGET)
 	./$(TEST_TARGET)
 
 clean:
-	rm -f $(OBJECTS)
+	rm -f $(OBJECTS) $(TEST_OBJECTS)
 
 fclean: clean
-	rm -f $(TARGET)
+	rm -f $(TARGET) $(TEST_TARGET)
 
 re: fclean all
 
