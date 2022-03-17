@@ -6,10 +6,7 @@
 # include "game.h"
 
 int main() {
-    t_cell board[BOARD_SIZE][BOARD_SIZE];
-    t_board_status ret;
 
-    board_reset(board);
     initscr();
     if (!has_colors()) {
         endwin();
@@ -25,10 +22,9 @@ int main() {
     colors_init();
     curs_set(0);
 
-    game_loop(board);
+    game_loop();
 
     endwin();
-    board_print(board);
 
     return 0;
 }

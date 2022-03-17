@@ -2,7 +2,8 @@ SOURCE_FILES=	board.c \
 			main.c \
 			colors.c \
 			draw_entity.c \
-			game.c
+			game.c \
+			controller.c
 
 SOURCE_DIR=src
 SOURCES=$(addprefix $(SOURCE_DIR)/,$(SOURCE_FILES))
@@ -15,8 +16,20 @@ LDFLAGS := -lncurses
 
 CC:=gcc -std=c11
 
+.PHONY: $(TARGET) all clean fclean re
+
+all: $(TARGET)
+
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(TARGET): $(OBJECTS)
 	$(CC) $(CFLAGS) -o $@ $(OBJECTS) $(LDFLAGS)
+
+clean:
+	rm -f $(OBJECTS)
+
+fclean: clean
+	rm -f $(TARGET)
+
+re: fclean all

@@ -46,6 +46,8 @@ void draw_board(t_cell (*board)[BOARD_SIZE]) {
 }
 
 void draw_player_cursor(int x, int y, uint8_t player) {
+	x = x * (D_CELL_SIZE + D_MARGIN);
+	y = y * (D_CELL_SIZE + D_MARGIN);
     attron(C_PLAYER(player));
     attron(A_STANDOUT);
     int limit = D_CELL_SIZE + 2 * D_MARGIN;

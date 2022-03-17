@@ -32,10 +32,10 @@ void board_print(t_cell (*board)[BOARD_SIZE]) {
         for (int c=0; c < BOARD_SIZE; c++) {
             char cc = 'E';
             if (board[r][c].player) {
-                cc == board[r][c].player + 48;
+                cc = board[r][c].player + 48;
             }
             if (board[r][c].level >= 4) {
-                cc == 'D';
+                cc = 'D';
             }
             printf("%c%d ",cc,board[r][c].level);
         }
