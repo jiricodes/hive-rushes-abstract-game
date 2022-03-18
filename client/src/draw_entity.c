@@ -27,12 +27,30 @@ void draw_cell_level(int x, int y, uint8_t level) {
     attroff(COLOR_PAIR(7));
 }
 
+void draw_dome(int x, int y) {
+	int limit = D_PLAYER_SIZE;
+	y += 3;
+	x += 3;
+	attron(COLOR_PAIR(1));
+    attron(A_STANDOUT);
+	for (int i=y; i < y + limit; i++) {
+       for (int j=x; j < x + limit; j++) {
+           mvaddch(i, j, ' ');
+       } 
+    }
+	attron(A_STANDOUT);
+    attroff(COLOR_PAIR(1));
+}
+
 void draw_cell(int x, int y, uint8_t level) {
     if (level == 0) {
         draw_cell_empty(x, y);
     } else if (level <= 4) {
         draw_cell_level(x, y, level);
-    }
+    	if (level == 4) {
+			draw_dome(x, y);
+		}
+	}
 }
 
 void draw_player(int x, int y, uint8_t player) {
