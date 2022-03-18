@@ -6,12 +6,14 @@
 
 static void test_board() {
     printf("Testing Board:\n");
-    // t_cell      board[BOARD_SIZE][BOARD_SIZE];
-    // t_status    ret;
-    // t_cell      *cell = NULL;
-    // t_pos       pos;
-    // board_reset(board);
-    // position_zero(&pos);
+    t_cell      board[BOARD_SIZE][BOARD_SIZE];
+    t_status    ret;
+    t_cell      *cell = NULL;
+    t_pos       pos;
+    board_reset(board);
+    position_zero(&pos);
+    int n = board_count_possible_builds(board, &pos);
+    assert(n!=0);
     // ret = board_get_cell(board, &pos, &cell);
     // assert(ret == OKAY);
     // fflush(stdout);
@@ -93,7 +95,7 @@ static void test_position() {
 int main() {
     printf("Starting Unittests\n");
     printf("DBG = %d\n", DBG_CONTROLS);
-    // test_board();
+    test_board();
     // test_handle_init();
     // test_text_getters();
     test_position();

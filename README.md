@@ -1,15 +1,20 @@
 # hive-rushes-abstract-game
 
 ## TODO
--[ ] board.c
-    -[x] player move
-    -[ ] player build
-    -[ ] possible moves
-    -[ ] possible builds
-    -[ ] check lose condition
-        -[ ] check if any player lost
--[ ] position.c
-    -[ ] bounds check
-    -[ ] range check
-- implement building pieces limits
+-[ ] implement building pieces limits
+    -[ ] resource indicator
+        -[x] logical
+        -[ ] UI
+    -[x] take from resources on build
+    -[x] add to "can build" logic
+    -[x] add resources remove to debug build
+-[ ] TESTS
+    -[ ] test loss due to no move
+    -[ ] test loss due to no build
+        -[ ] also if out of specific resources
+-[ ] Readme with instructions
+    -[ ] intro
+    -[ ] install
+    -[ ] run
+    -[ ] controls
 

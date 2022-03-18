@@ -10,6 +10,7 @@ typedef enum e_status {
     DOMED,
     INVALIDACTION,
     OUTOFRANGE,
+    NORESOURCE,
     FREEWORKER,
     VICTORY,
     LOSS,

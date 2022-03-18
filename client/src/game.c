@@ -136,16 +136,17 @@ void handle_move(t_game_controller *game_controller, t_game_data *game_data) {
 	}
 	/// Save cursor in selected, in order to use it as 'from' in build stage
 	position_assign(&game_controller->selected, &game_controller->cursor);
-}
-
-void handle_build(t_game_controller *game_controller, t_game_data *game_data) {
-	t_status ret = player_able_to_build(game_data->board, &game_controller->selected);
+	/// Check if we can even build from here
+	ret = player_able_to_build(game_data->board, &game_controller->cursor);
 	if (ret == LOSS) {
 		game_controller->stage = G_END;
 		switch_player(&game_controller->player);
 		return ;
 	}
-	ret = board_player_build(game_data->board, &game_controller->selected, &game_controller->cursor, game_controller->player);
+}
+
+void handle_build(t_game_controller *game_controller, t_game_data *game_data) {
+	t_status ret = board_player_build(game_data->board, &game_controller->selected, &game_controller->cursor, game_controller->player);
 	if (ret == OKAY) {
 		game_controller->stage = G_MOVE_SELECT;
 		switch_player(&game_controller->player);

@@ -7,7 +7,6 @@
 #include "status.h"
 
 #define WORKERS 2
-#define P_INIT_POS -69
 
 typedef struct s_player {
     t_pos positions[WORKERS];
