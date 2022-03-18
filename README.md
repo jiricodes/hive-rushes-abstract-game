@@ -1,5 +1,13 @@
 # hive-rushes-abstract-game
 
+## About the Game
+
+[Game rules](/resources/5d-santorini-rulebook.pdf)
+
+## Usage
+
+## Resources
+
 ## TODO
 -[ ] implement building pieces limits
     -[ ] resource indicator
