@@ -31,7 +31,7 @@ int player_able_to_move(t_cell (*board)[BOARD_SIZE], t_player *player)
 int player_able_to_build(t_cell (*board)[BOARD_SIZE], t_pos *from)
 {
 	uint8_t builds = 0;
-	builds += board_count_possible_moves(board, &from);
+	builds += board_count_possible_builds(board, &from);
 	if (builds)
 		return (OKAY);
 	return (LOSS);
