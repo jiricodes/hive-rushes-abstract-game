@@ -24,7 +24,7 @@ typedef struct s_game_data {
 	t_player players[MAX_PLAYERS];
 }					t_game_data;
 
-void game_loop();
+int game_loop();
 void game_controller_init(t_game_controller *game_controller);
 void game_data_init(t_game_data *data);
 void handle_init(t_game_controller *game_controller, t_game_data *game_data);

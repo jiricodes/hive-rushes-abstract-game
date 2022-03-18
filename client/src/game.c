@@ -144,9 +144,10 @@ void handle_select(t_game_controller *game_controller, t_game_data *game_data) {
 	}
 }
 
-void game_loop() {
+int game_loop() {
 	t_game_controller game_controller;
 	t_game_data game_data;
+	int ret = 0;
 
 	game_controller_init(&game_controller);
 	game_data_init(&game_data);
@@ -162,6 +163,7 @@ void game_loop() {
 			ch = KEY_EXIT;
 		}
         if (ch == KEY_EXIT) {
+			ret = -1;
             break ;
         }
 		switch (ch) {
@@ -199,4 +201,5 @@ void game_loop() {
 			render(&game_controller, &game_data);;
 		}
     }
+	return (ret);
 }

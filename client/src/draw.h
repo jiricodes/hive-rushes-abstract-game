@@ -10,6 +10,6 @@ typedef struct s_draw_dimensions {
 }               t_draw_dim;
 
 
-void draw_splash_screen();
+int draw_splash_screen();
 
 #endif
