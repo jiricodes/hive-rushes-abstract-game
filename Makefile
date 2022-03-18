@@ -8,7 +8,8 @@ SOURCE_FILES=	board.c \
 				position.c \
 				state.c \
 				status.c \
-				board_resources.c
+				board_resources.c \
+				cell.c
 
 TEST_FILES:=$(SOURCE_FILES) test.c
 SOURCE_FILES += main.c

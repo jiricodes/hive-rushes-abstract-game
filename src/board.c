@@ -1,42 +1,6 @@
 #include "board.h"
 
-void cell_default(t_cell *cell) {
-    cell->player = -1;
-    cell->level = 0;
-}
-
-void cell_build(t_cell *cell) {
-    cell->level += 1;
-}
-
-int cell_domed(t_cell *cell) {
-	return (cell->level == 4);
-}
-void cell_set_player(t_cell *cell, int8_t player) {
-    cell->player = player;
-}
-
-void cell_set_empty(t_cell *cell) {
-    cell->player = -1;
-}
-
-int8_t cell_occupied(t_cell *cell) {
-    return (cell->player >= 0);
-}
-
-t_status cell_can_build(t_cell *cell) {
-    if (cell_occupied(cell)) {
-        return (OCCUPIED);
-    }
-    if (cell_domed(cell)) {
-        return (DOMED);
-    }
-    if (!resources_has_level(cell->level)) {
-        return (NORESOURCE);
-    }
-    return (OKAY);
-}
-
+/// Resets the board and resources
 void board_reset(t_cell (*board)[BOARD_SIZE]) {
     reset_resources();
     for (int r=0; r < BOARD_SIZE; r++) {
@@ -44,31 +8,6 @@ void board_reset(t_cell (*board)[BOARD_SIZE]) {
             cell_default(&board[r][c]);
         }
     }
-}
-
-t_status board_check_bounds(t_pos *position)
-{
-    if (position->x >= BOARD_SIZE)
-        return (OUTOFBOUNDS);
-    if (position->y >= BOARD_SIZE)
-        return (OUTOFBOUNDS);
-    if (position->x < 0)
-        return (OUTOFBOUNDS);
-    if (position->y < 0)
-        return (OUTOFBOUNDS);
-    return (OKAY);
-}
-
-t_status board_check_range(t_pos *from, t_pos *to, int range)
-{
-    int x_diff = abs(to->x - from->x);
-    int y_diff = abs(to->y - from->y);
-
-    if (y_diff > range || x_diff > range)
-        return (OUTOFRANGE);
-    if (y_diff == 0 && x_diff == 0)
-        return (INVALIDACTION);
-    return (OKAY);
 }
 
 
@@ -232,7 +171,7 @@ t_status board_player_move(t_cell (*board)[BOARD_SIZE], t_pos *from, t_pos *to, 
     }
 
     // check if "to" is in range
-    ret =  board_check_range(from, to, 1);
+    ret =  position_range_check(from, to, 1);
     if (ret != OKAY) {
         return (ret);
     }
@@ -265,7 +204,7 @@ t_status board_player_build(t_cell (*board)[BOARD_SIZE], t_pos *from, t_pos *to,
         return (ret);
     }
     // check if from  in range to
-    ret = board_check_range(from, to, 1);
+    ret = position_range_check(from, to, 1);
     if (ret != OKAY) {
         return (ret);
     }

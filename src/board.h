@@ -9,13 +9,11 @@
 #include "position.h"
 #include "debug.h"
 #include "board_resources.h"
+#include "cell.h"
 
 # define BOARD_SIZE 5
 
-typedef struct s_cell {
-    int8_t player; // -1 - empty, else N - player N
-    int8_t level;
-}               t_cell;
+
 
 void board_reset(t_cell (*board)[BOARD_SIZE]);
 void board_print(t_cell (*board)[BOARD_SIZE]);

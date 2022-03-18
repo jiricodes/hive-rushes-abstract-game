@@ -1,14 +1,18 @@
 #include "position.h"
+
+/// Zeroing position
 void position_zero(t_pos *position) {
     position->x = 0;
     position->y = 0;
 }
 
+/// Sets to predefined high value to mark as NONE
 void position_none(t_pos *pos) {
 	pos->x = POS_NONE;
 	pos->y = POS_NONE;
 }
 
+/// Check if none
 int8_t position_is_none(t_pos *pos) {
 	return (pos->x == POS_NONE && pos->y == POS_NONE);
 }
@@ -44,10 +48,18 @@ t_status position_bounds_check(t_pos *p, int size) {
 }
 
 /// checks if abs values of  a - b are under range
-t_status position_range_check(t_pos *a, t_pos *b, int range) {
-	return OUTOFBOUNDS;
+t_status position_range_check(t_pos *from, t_pos *to, int range) {
+	int x_diff = abs(to->x - from->x);
+    int y_diff = abs(to->y - from->y);
+
+    if (y_diff > range || x_diff > range)
+        return (OUTOFRANGE);
+    if (y_diff == 0 && x_diff == 0)
+        return (INVALIDACTION);
+    return (OKAY);
 }
 
+/// Position printer
 void position_print(t_pos *p) {
     printf("Pos {x: %d, y: %d}\n", p->x, p->y);
 }
