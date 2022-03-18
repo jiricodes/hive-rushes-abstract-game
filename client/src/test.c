@@ -2,6 +2,7 @@
 #include "board.h"
 #include "game.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 static void test_board() {
     printf("Testing Board:\n");
@@ -53,10 +54,38 @@ static void test_handle_init() {
     printf("Done\n");
 }
 
+static void get_player_str(uint8_t player, char *buffer) {
+	sprintf(buffer, "PLAYER %d", player + 1);
+}
+
+static char **get_selected_str(t_pos *pos, char *buffer) {
+    sprintf(buffer, "SELECTED { x: %d, y: %d }", pos->x, pos->y);
+}
+
+static void test_text_getters() {
+    printf("Testing Text Getters:\n");
+    t_game_controller game_controller;
+	t_game_data game_data;
+
+	game_controller_init(&game_controller);
+	game_data_init(&game_data);
+    game_controller.selected.x = 0;
+    game_controller.selected.y = 0;
+    char player_text[12];
+    char stage_text[30];
+    char select_text[30];
+    get_player_str(game_controller.player, player_text);
+    get_selected_str(&game_controller.selected, select_text);
+    stage_as_str(game_controller.stage, stage_text);
+    printf("%s | %s | %s\n", player_text, stage_text, select_text);
+    printf("Done\n");
+}
+
 int main() {
     printf("Starting Unittests\n");
     test_board();
     test_handle_init();
+    test_text_getters();
     printf("Tests done.\n");
     return (0);
 }
