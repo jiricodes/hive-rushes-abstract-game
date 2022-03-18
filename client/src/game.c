@@ -97,13 +97,17 @@ void handle_move(t_game_controller *game_controller, t_game_data *game_data) {
 		game_controller->player);
 	if (ret != OKAY && ret != VICTORY) {
 		return ;
+	} else if (ret == VICTORY) {
+		game_controller->stage = G_END;
 	}
 	ret = player_move_to(&game_data->players[game_controller->player], &game_controller->selected,&game_controller->cursor);
 	assert(ret == OKAY);
 	/// TODO: Add checking for game end!
 	/// if end -> stage g_end
 	/// Switch to build stage
-	game_controller->stage = G_BUILD;
+	if (game_controller->stage != G_END) {
+		game_controller->stage = G_BUILD;
+	}
 	/// Save cursor in selected, in order to use it as 'from' in build stage
 	position_assign(&game_controller->selected, &game_controller->cursor);
 }
@@ -199,6 +203,11 @@ int game_loop() {
 		if (ch != -1) {
 			// Add check for win / loose
 			render(&game_controller, &game_data);;
+		}
+		/// If we're in a game end stage, return to menu
+		if (game_controller.stage == G_END) {
+			ret = game_controller.player + 1;
+			break;
 		}
     }
 	return (ret);
