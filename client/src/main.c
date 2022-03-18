@@ -13,7 +13,7 @@ int main() {
         return 1;
     }
 
-    // timeout(30);
+    timeout(1);
     noecho();
     cbreak();
     keypad(stdscr, TRUE);
@@ -22,6 +22,8 @@ int main() {
     colors_init();
     curs_set(0);
 
+    // Draw splash
+    draw_splash_screen();
     // Enter game loop
     game_loop();
 

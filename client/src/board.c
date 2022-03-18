@@ -9,12 +9,19 @@ void cell_build(t_cell *cell) {
     cell->level += 1;
 }
 
+int cell_domed(t_cell *cell) {
+	return (cell->level == 4);
+}
 void cell_set_player(t_cell *cell, int8_t player) {
     cell->player = player;
 }
 
 void cell_set_empty(t_cell *cell) {
     cell->player = -1;
+}
+
+int8_t cell_occupied(t_cell *cell) {
+    return (cell->player >= 0);
 }
 
 void board_reset(t_cell (*board)[BOARD_SIZE]) {
@@ -91,7 +98,7 @@ void board_print(t_cell (*board)[BOARD_SIZE]) {
     for (int r=0; r < BOARD_SIZE; r++) {
         for (int c=0; c < BOARD_SIZE; c++) {
             char cc = 'E';
-            if (board[r][c].player) {
+            if (board[r][c].player >= 0) {
                 cc = board[r][c].player + 48;
             }
             if (board[r][c].level >= 4) {
@@ -103,17 +110,19 @@ void board_print(t_cell (*board)[BOARD_SIZE]) {
     }
 };
 
-t_status board_build_at(t_cell (*board)[BOARD_SIZE], uint8_t row, uint8_t col) {
-    if (row >= BOARD_SIZE || col >= BOARD_SIZE) {
-        return (OUTOFBOUNDS);
+t_status board_build_at(t_cell (*board)[BOARD_SIZE], t_pos *pos) {
+	t_cell *cell = NULL;
+    t_status ret = board_get_cell(board, pos, &cell);
+    if (ret != OKAY) {
+        return (ret);
     }
-    if (board[row][col].player >= 0) {
+    if (cell_occupied(cell)) {
         return (OCCUPIED);
     }
-    if (board[row][col].level == 4) {
+    if (cell_domed(cell)) {
         return (DOMED);
     }
-    cell_build(&board[row][col]);
+    cell_build(cell);
     return (OKAY);
 }
 
@@ -146,6 +155,7 @@ t_status board_player_build(t_cell (*board)[BOARD_SIZE], t_pos *to) {
     //      return OKAY
     // else
     //      return SOMEThING
+	return OKAY;
 }
 
 /// returns number of neighbouring tiles to move to
@@ -165,4 +175,37 @@ int boar_check_win(t_cell (*board)[BOARD_SIZE]) {
     //  return cell.occupied
     // else
     //  return -1
+	return -1;
+}
+
+t_status board_get_cell(t_cell (*board)[BOARD_SIZE], t_pos *pos, t_cell **cell) {
+    t_status ret = position_bounds_check(pos, BOARD_SIZE);
+    if (ret != OKAY) {
+        return (ret);
+    }
+    *cell = &board[pos->y][pos->x];
+    return (OKAY);
+}
+
+t_status board_place_player(t_cell (*board)[BOARD_SIZE], t_pos *pos, int8_t player) {
+    t_cell *cell = NULL;
+    t_status ret = board_get_cell(board, pos, &cell);
+    if (ret != OKAY) {
+        return (ret);
+    }
+    if (cell_occupied(cell)) {
+        return (OCCUPIED);
+    }
+    cell_set_player(cell, player);
+    return(OKAY);
+}
+
+t_status board_set_cell_empty(t_cell (*board)[BOARD_SIZE], t_pos *pos) {
+	t_cell *cell = NULL;
+    t_status ret = board_get_cell(board, pos, &cell);
+    if (ret != OKAY) {
+        return (ret);
+    }
+    cell_set_empty(cell);
+    return(OKAY);
 }

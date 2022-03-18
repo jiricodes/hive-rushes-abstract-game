@@ -36,6 +36,9 @@ $(TARGET): $(OBJECTS)
 run:
 	./$(TARGET)
 
+test:
+	@make test -C client
+
 clean:
 	rm -f $(OBJECTS)
 

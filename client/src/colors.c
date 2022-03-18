@@ -10,6 +10,6 @@ int colors_init() {
     init_pair(5, COLOR_YELLOW, -1);
     init_pair(6, COLOR_CYAN, -1);
     init_pair(7, COLOR_WHITE, -1);
-    init_pair(8, COLOR_MAGENTA, -1);
+    init_pair(8, COLOR_BLACK, -1);
     return 0;
 }

@@ -10,6 +10,7 @@ typedef enum e_status {
     DOMED,
     INVALIDACTION,
     OUTOFRANGE,
+    FREEWORKER,
     _UNUSED // add new status above this always ^^^
 
 }           t_status;
