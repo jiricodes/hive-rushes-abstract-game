@@ -109,3 +109,15 @@ void draw_player_cursor(int x, int y, uint8_t player) {
     attron(A_STANDOUT);
     attroff(C_PLAYER(player));
 }
+
+
+void draw_status_bar(char *player_info, char *stage_info, char *additional_info) {
+    int maxx = getmaxx(stdscr);;
+    int l = (strlen(player_info) + strlen(stage_info) + strlen(additional_info) + 6);
+    int x = 0;
+    if (l < maxx) {
+        x = (maxx - l) / 2;
+    }
+    int y = BOARD_SIZE * D_CELL_SIZE + (BOARD_SIZE + 1) * D_MARGIN + 1;
+    mvprintw(y, x, "%s | %s | %s");
+}

@@ -8,3 +8,5 @@ typedef enum e_game_stage {
 	G_END
 }			t_stage;
 #endif
+
+void stage_as_str(t_stage stage, char *buffer);

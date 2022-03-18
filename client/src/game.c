@@ -14,11 +14,30 @@ void game_data_init(t_game_data *data) {
 	player_reset(&data->players[1]);
 }
 
-void render(t_cell (*board)[BOARD_SIZE], t_pos *cursor, uint8_t player) {
+static void get_player_str(uint8_t player, char *buffer) {
+	sprintf(buffer, "PLAYER %d", player + 1);
+}
+
+static char **get_selected_str(t_pos *pos, char *buffer) {
+    sprintf(buffer, "SELECTED { x: %d, y: %d }", pos->x, pos->y);
+}
+
+void render(t_game_controller *game_controller, t_game_data *game_data) {
 	clear();
 	draw_check_x_offset();
-	draw_board(board);
-	draw_player_cursor(cursor->x, cursor->y, player);
+	draw_board(game_data->board);
+	draw_player_cursor(game_controller->cursor.x, game_controller->cursor.y, game_controller->player);
+	char player_text[12];
+    char stage_text[30];
+    char select_text[30];
+	// get_player_str(game_controller->player, player_text);
+    // get_selected_str(&game_controller->selected, select_text);
+    // stage_as_str(game_controller->stage, stage_text);
+	// draw_status_bar( \
+	// 	player_text, \
+	// 	stage_text, \
+	// 	select_text \
+	// );
     refresh();
 }
 
@@ -124,7 +143,7 @@ void game_loop() {
 	game_controller_init(&game_controller);
 	game_data_init(&game_data);
 
-	render(game_data.board, &game_controller.cursor, game_controller.player);
+	render(&game_controller, &game_data);
     int ch = 0;
     while ((ch = getch())) {
 		if (ch == 27 ) {
@@ -175,7 +194,7 @@ void game_loop() {
 		// No need to do any updates if no user input
 		if (ch != -1) {
 			// Add check for win / loose
-			render(game_data.board, &game_controller.cursor, game_controller.player);
+			render(&game_controller, &game_data);;
 		}
     }
 }
