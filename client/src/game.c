@@ -18,20 +18,20 @@ static void get_player_str(uint8_t player, char *buffer) {
 	sprintf(buffer, "PLAYER %d", player + 1);
 }
 
-int player_able_to_move(t_cell (*board)[BOARD_SIZE], t_player *player)
+t_status player_able_to_move(t_cell (*board)[BOARD_SIZE], t_player *player)
 {
 	uint8_t moves = 0;
-	for (int i = 0; i < P_SLOTS; i++)
+	for (int i = 0; i < WORKERS; i++)
 		moves += board_count_possible_moves(board, &player->positions[i]);
 	if (moves)
 		return (OKAY);
 	return (LOSS);
 }
 
-int player_able_to_build(t_cell (*board)[BOARD_SIZE], t_pos *from)
+t_status player_able_to_build(t_cell (*board)[BOARD_SIZE], t_pos *from)
 {
 	uint8_t builds = 0;
-	builds += board_count_possible_builds(board, &from);
+	builds += board_count_possible_builds(board, from);
 	if (builds)
 		return (OKAY);
 	return (LOSS);
@@ -92,6 +92,13 @@ void handle_init(t_game_controller *game_controller, t_game_data *game_data) {
 }
 
 void handle_move_select(t_game_controller *game_controller, t_game_data *game_data) {
+	t_status ret = player_able_to_move(game_data->board, &game_data->players[game_controller->player]);
+	if (ret == LOSS) {
+		game_controller->stage = G_END;
+		switch_player(&game_controller->player);
+		return ;
+	}
+
 	if (player_position_at(&game_data->players[game_controller->player], &game_controller->cursor)) {
 		int res = position_toggle(&game_controller->selected, &game_controller->cursor);
 		if (res == 1) {
@@ -132,7 +139,13 @@ void handle_move(t_game_controller *game_controller, t_game_data *game_data) {
 }
 
 void handle_build(t_game_controller *game_controller, t_game_data *game_data) {
-	t_status ret = board_player_build(game_data->board, &game_controller->selected, &game_controller->cursor, game_controller->player);
+	t_status ret = player_able_to_build(game_data->board, &game_controller->selected);
+	if (ret == LOSS) {
+		game_controller->stage = G_END;
+		switch_player(&game_controller->player);
+		return ;
+	}
+	ret = board_player_build(game_data->board, &game_controller->selected, &game_controller->cursor, game_controller->player);
 	if (ret == OKAY) {
 		game_controller->stage = G_MOVE_SELECT;
 		switch_player(&game_controller->player);

@@ -1,13 +1,13 @@
 #include "player.h"
 
 void player_reset(t_player *player) {
-	for (int i = 0; i < P_SLOTS; i++) {
+	for (int i = 0; i < WORKERS; i++) {
 		position_none(&player->positions[i]);
 	}
 }
 
 int player_place(t_player *player, t_pos *pos) {
-	for (int i = 0; i < P_SLOTS; i++) {
+	for (int i = 0; i < WORKERS; i++) {
 		if (position_is_none(&player->positions[i])) {
 			player->positions[i].x = pos->x;
 			player->positions[i].y = pos->y;
@@ -18,7 +18,7 @@ int player_place(t_player *player, t_pos *pos) {
 }
 
 int player_all_placed(t_player *player) {
-	for (int i = 0; i < P_SLOTS; i++) {
+	for (int i = 0; i < WORKERS; i++) {
 		if (position_is_none(&player->positions[i])) {
 			return (FREEWORKER);
 		}
@@ -28,7 +28,7 @@ int player_all_placed(t_player *player) {
 
 void player_print(t_player *player) {
 	printf("Player {\n");
-	for (int i = 0; i < P_SLOTS; i++) {
+	for (int i = 0; i < WORKERS; i++) {
 		printf("\t");
 		position_print(&player->positions[i]);
 	}
@@ -36,7 +36,7 @@ void player_print(t_player *player) {
 }
 
 int player_position_at(t_player *player, t_pos *pos) {
-	for (int i = 0; i < P_SLOTS; i++) {
+	for (int i = 0; i < WORKERS; i++) {
 		if (player->positions[i].x == pos->x && player->positions[i].y == pos->y) {
 			return (1);
 		}
@@ -45,7 +45,7 @@ int player_position_at(t_player *player, t_pos *pos) {
 }
 
 t_status player_move_to(t_player *player, t_pos *from, t_pos *pos) {
-	for (int i = 0; i < P_SLOTS; i++) {
+	for (int i = 0; i < WORKERS; i++) {
 		if (player->positions[i].x == from->x && player->positions[i].y == from->y) {
 			player->positions[i].x = pos->x;
 			player->positions[i].y = pos->y;
