@@ -81,11 +81,21 @@ static void test_text_getters() {
     printf("Done\n");
 }
 
+static void test_position() {
+    t_pos buff[8] = {0};
+    t_pos pos = {1, 1};
+    position_neighbours(&pos, buff);
+    for (int i = 0; i < 8; i++) {
+        position_print(&buff[i]);
+    }
+}
+
 int main() {
     printf("Starting Unittests\n");
-    test_board();
-    test_handle_init();
-    test_text_getters();
+    // test_board();
+    // test_handle_init();
+    // test_text_getters();
+    test_position();
     printf("Tests done.\n");
     return (0);
 }

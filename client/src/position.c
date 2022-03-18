@@ -44,3 +44,31 @@ t_status position_range_check(t_pos *a, t_pos *b, int range) {
 void position_print(t_pos *p) {
     printf("Pos {x: %d, y: %d}\n", p->x, p->y);
 }
+
+/// assumes buff is handled elsewhere
+void position_neighbours(t_pos *pos, t_pos buff[8]) {
+	// top left
+	buff[0].x = pos->x - 1;
+	buff[0].y = pos->y - 1;
+	// top
+	buff[1].x = pos->x;
+	buff[1].y = pos->y - 1;
+	// top right
+	buff[2].x = pos->x + 1;
+	buff[2].y = pos->y - 1;
+	// left
+	buff[3].x = pos->x - 1;
+	buff[3].y = pos->y;
+	// right
+	buff[4].x = pos->x + 1;
+	buff[4].y = pos->y;
+	// bottom left
+	buff[5].x = pos->x - 1;
+	buff[5].y = pos->y + 1;
+	// bottom
+	buff[6].x = pos->x;
+	buff[6].y = pos->y + 1;
+	// bottom right
+	buff[7].x = pos->x + 1;
+	buff[7].y = pos->y + 1;
+}

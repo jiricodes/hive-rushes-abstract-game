@@ -19,4 +19,5 @@ void position_print(t_pos *p);
 void position_none(t_pos *pos);
 int8_t position_is_none(t_pos *pos);
 int position_toggle(t_pos *pos, t_pos *cursor);
+void position_neighbours(t_pos *pos, t_pos buff[8]);
 #endif

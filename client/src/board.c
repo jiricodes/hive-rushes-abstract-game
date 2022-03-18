@@ -136,6 +136,23 @@ t_status board_build_at(t_cell (*board)[BOARD_SIZE], t_pos *pos) {
     return (OKAY);
 }
 
+t_status board_player_in_range(t_cell (*board)[BOARD_SIZE], t_pos *from, int8_t player) {
+    t_pos buff[8] = {0};
+    position_neighbours(from, buff);
+
+    t_status ret = OKAY;
+    t_cell *cell = NULL;
+    for (int i = 0; i < 8; i++) {
+        ret = board_get_cell(board, &buff[i], &cell);
+        if (ret == OKAY) {
+            if (cell->player == player) {
+                return (OKAY);
+            }
+        }
+    }
+    return (INVALIDACTION);
+}
+
 /// Handles player movement actions
 /// TODO: refactor
 t_status board_player_move(t_cell (*board)[BOARD_SIZE], t_pos *from, t_pos *to, int8_t player) {
@@ -182,9 +199,18 @@ t_status board_player_move(t_cell (*board)[BOARD_SIZE], t_pos *from, t_pos *to, 
 }
 
 /// Handles player buiding actions
-/// Assumes range has been checked
 t_status board_player_build(t_cell (*board)[BOARD_SIZE], t_pos *to, int8_t player) {
     // check if in bounds
+    t_cell *cell = NULL;
+    t_status ret = board_get_cell(board, to, &cell);
+    if (ret != OKAY) {
+        return (ret);
+    }
+    ret = board_player_in_range(board, to, player);
+    if (ret != OKAY) {
+        return (ret);
+    }
+    
     // check if player in range
     //  -iterate over neighbours and check if any == player
     // check if not occupied / domed
