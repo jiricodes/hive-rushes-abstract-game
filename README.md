@@ -1,45 +1,59 @@
-![test](https://cf.geekdo-images.com/9aMkHKzaLRXdxCYBbaR-Jg__imagepagezoom/img/iMr1cojNdOcXEjs9RR42TL95iS0=/fit-in/1200x900/filters:no_upscale():strip_icc()/pic2931136.jpg)
+# Hive Rushes - Abstract Game: Santorini
 
-# hive-rushes-abstract-game
+This is a Hive Helsinki Coding School's rush project of abstract games. Project is based on the board game called Santorini and its implementation in C language.
 
-This is a Hive Helsinki Coding School's rush project of abstract games. Project is based on the board game called Santorini and implementing in in C language.
+## Santorini, the game
 
-## About the Game
+> Santorini is an accessible strategy game, simple enough for an elementary school classroom while aiming to provide gameplay depth and content for hardcore gamers to explore. [boardgamegeek.com]
 
-[Game rules](/resources/5d-santorini-rulebook.pdf)
+Our implementation covers only the very basic rules for 2 players. Here is the complete [Rule Book](/resources/5d-santorini-rulebook.pdf).
 
-Note: Our game doesn't have gods or heroes implemented.
+<p float="center">
+  <img src="resources/santorini_splash.png" width="240" />
+  <img src="resources/santorini_ingame.png" width="240" />
+</p>
+
 ## Usage
 
-You need to have buildessential and libncurses-dev packages installed.
-After that you only have to 'make' to run the program.
+We have included a Makefile to take care of almost everything.
+
+### Prerequirements
+The game needs to be compiled and therefore a compiler is required. Linux generally comes with one built-in, MacOS usually needs Xcode installed.
+
+We used `ncurses` library which should be present by default. If not following packages should take care of everything:
+```
+sudo apt-get install build-essential libncurses-dev
+```
+
+### Basic
+To build, test and run the game use `make` command.
+
+To run the game use `make run`. Or eventually `./santorini` after building it.
+
+To solely build the game run `make santorini`.
+
+To run tests `make test`
+
+To cleanup `make clean` or `make fclean` to additionally remove compiled binaries.
+
 
 ## Controls
+In each stage, you can move the cursor to a desired tile and select it with `SELECT`. Specifically in setup stage, a free worker will be placed on selected tile. In move stage, first select the worker you desire to use in this turn. Then select a tile to move the worker to. After the move, there's the build stage that requires you to select a valid tile for building.
 
-Arrow keys: Move cursor.
+### Key map
 
-Spacebar: Verify selection
+```
+Arrow keys: MOVE CURSOR
 
-## Resources
+Spacebar: SELECT
 
+Escape: EXIT
+```
 
+## Contributors
 
-## TODO
--[ ] implement building pieces limits
-    -[ ] resource indicator
-        -[x] logical
-        -[ ] UI
-    -[x] take from resources on build
-    -[x] add to "can build" logic
-    -[x] add resources remove to debug build
--[ ] TESTS
-    -[ ] test loss due to no move
-    -[ ] test loss due to no build
-        -[ ] also if out of specific resources
--[ ] Readme with instructions
-    -[ ] intro
-    -[ ] install
-        - [ ] buildessential & libncurses-dev packages
-    -[ ] run
-    -[ ] controls
+[Jiri Novotny](https://www.jiricodes.com/)
+[Lauri Salmi](https://github.com/lasalmi)
 
+## License
+[MIT](LICENSE)

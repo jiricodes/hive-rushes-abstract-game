@@ -21,11 +21,11 @@ OBJECTS:=$(SOURCES:.c=.o)
 TEST_SOURCES:=$(addprefix $(SOURCE_DIR)/,$(TEST_FILES))
 TEST_OBJECTS:=$(TEST_SOURCES:.c=.o)
 
-TARGET := santorini-client
+TARGET := santorini
 TEST_TARGET:=unittest	
 
 CFLAGS := -I./$(SOURCE_DIR) -O3
-#CFLAGS += -Werror -Wall -Wextra -pedantic
+CFLAGS += -Werror -Wall -Wextra -pedantic
 DBG?=0
 ifeq ($(DBG),1)
 	CFLAGS += -DDBG=1
