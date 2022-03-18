@@ -9,8 +9,8 @@ This is a Hive Helsinki Coding School's rush project of abstract games. Project 
 Our implementation covers only the very basic rules for 2 players. Here is the complete [Rule Book](/resources/5d-santorini-rulebook.pdf).
 
 <p float="center">
-  <img src="resources/santorini_splash.png" width="240" />
-  <img src="resources/santorini_ingame.png" width="240" />
+  <img src="resources/santorini_splash.png" width="320" />
+  <img src="resources/santorini_ingame.png" width="320" />
 </p>
 
 ## Usage
