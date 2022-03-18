@@ -175,6 +175,24 @@ uint8_t board_count_possible_moves(t_cell (*board)[BOARD_SIZE], t_pos *from)
     return (moves);
 }
 
+uint8_t board_count_possible_builds(t_cell (*board)[BOARD_SIZE], t_pos *from)
+{
+    t_pos buff[8] = {0};
+    position_neighbours(from, buff);
+    uint8_t builds = 0;
+
+    t_status ret = OKAY;
+    t_cell *cell = NULL;
+    for (int i = 0; i < 8; i++)
+    {
+        ret = board_get_cell(board, &buff[i], &cell);
+        if (ret == OKAY)
+            ret = board_check_occupancy(board, &buff[i]);
+            if (ret == OKAY)
+                builds++;
+    }
+    return (builds);
+}
 /// Handles player movement actions
 /// TODO: refactor
 t_status board_player_move(t_cell (*board)[BOARD_SIZE], t_pos *from, t_pos *to, int8_t player) {
