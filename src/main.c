@@ -2,6 +2,7 @@
 
 # include "colors.h"
 # include "game.h"
+# include "debug.h"
 
 int main() {
 
@@ -40,6 +41,8 @@ int main() {
 
     // Cleanup
     endwin();
-
+#if(DBG_CONTROLS == 1 && __APPLE__ == 1)
+	system("leaks santorini");
+#endif
     return (0);
 }

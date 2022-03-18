@@ -75,6 +75,7 @@ static void test_position() {
 int main() {
     printf("Starting Unittests\n");
     printf("DBG = %d\n", DBG_CONTROLS);
+	printf("APPLE = %d \n", __APPLE__);
     test_board();
     test_handle_init();
     test_position();
