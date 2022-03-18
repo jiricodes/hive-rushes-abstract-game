@@ -11,6 +11,7 @@ typedef enum e_status {
     INVALIDACTION,
     OUTOFRANGE,
     FREEWORKER,
+    VICTORY,
     _UNUSED // add new status above this always ^^^
 
 }           t_status;

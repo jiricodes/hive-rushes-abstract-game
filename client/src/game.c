@@ -19,7 +19,9 @@ static void get_player_str(uint8_t player, char *buffer) {
 }
 
 static char **get_selected_str(t_pos *pos, char *buffer) {
-    sprintf(buffer, "SELECTED { x: %d, y: %d }", pos->x, pos->y);
+	if (!position_is_none(pos)) {
+    	sprintf(buffer, "SELECTED { x: %d, y: %d }", pos->x, pos->y);
+	}
 }
 
 void render(t_game_controller *game_controller, t_game_data *game_data) {
@@ -27,17 +29,17 @@ void render(t_game_controller *game_controller, t_game_data *game_data) {
 	draw_check_x_offset();
 	draw_board(game_data->board);
 	draw_player_cursor(game_controller->cursor.x, game_controller->cursor.y, game_controller->player);
-	char player_text[12];
-    char stage_text[30];
-    char select_text[30];
-	// get_player_str(game_controller->player, player_text);
-    // get_selected_str(&game_controller->selected, select_text);
-    // stage_as_str(game_controller->stage, stage_text);
-	// draw_status_bar( \
-	// 	player_text, \
-	// 	stage_text, \
-	// 	select_text \
-	// );
+	char player_text[12] = {0};
+    char stage_text[35] = {0};
+    char select_text[30] = {0};
+	get_player_str(game_controller->player, player_text);
+    get_selected_str(&game_controller->selected, select_text);
+    stage_as_str(game_controller->stage, stage_text);
+	draw_status_bar( \
+		player_text, \
+		stage_text, \
+		select_text\
+	);
     refresh();
 }
 
@@ -88,14 +90,18 @@ void handle_move(t_game_controller *game_controller, t_game_data *game_data) {
 		}
 	}
 	/// naive
-	t_status ret = board_place_player(game_data->board, &game_controller->cursor, game_controller->player);
-	if (ret != OKAY) {
+	t_status ret = board_player_move(\
+		game_data->board, \
+		&game_controller->selected, \
+		&game_controller->cursor, \
+		game_controller->player);
+	if (ret != OKAY && ret != VICTORY) {
 		return ;
 	}
-	ret = board_set_cell_empty(game_data->board, &game_controller->selected);
-	assert(ret == OKAY);
 	ret = player_move_to(&game_data->players[game_controller->player], &game_controller->selected,&game_controller->cursor);
 	assert(ret == OKAY);
+	/// TODO: Add checking for game end!
+	/// if end -> stage g_end
 	/// Switch to build stage
 	game_controller->stage = G_BUILD;
 	/// clear selection
@@ -174,12 +180,6 @@ void game_loop() {
 
 			case KEY_DOWN: {
 				cursor_down(&game_controller.cursor);
-				break;
-			}
-
-			case 'p':
-			case 'P': {
-				switch_player(&game_controller.player);
 				break;
 			}
 

@@ -47,17 +47,9 @@ t_status board_check_bounds(t_pos *position)
 
 t_status board_check_range(t_pos *from, t_pos *to, int range)
 {
-    int x_diff;
-    int y_diff;
+    int x_diff = abs(to->x - from->x);
+    int y_diff = abs(to->y - from->y);
 
-    if (from->x > to->x)
-        x_diff = from->x - to->x;
-    else
-        x_diff = to->x - from->x;
-    if (from->y > to->y)
-        y_diff = from->y - to->y;
-    else
-        y_diff = to->y - from->y;
     if (y_diff > range || x_diff > range)
         return (OUTOFRANGE);
     if (y_diff == 0 && x_diff == 0)
@@ -65,9 +57,15 @@ t_status board_check_range(t_pos *from, t_pos *to, int range)
     return (OKAY);
 }
 
-t_status board_check_isplayer(t_cell (*board)[BOARD_SIZE], t_pos *from)
-{
-    if (board[from->y][from->x].player > -1)
+
+t_status board_check_isplayer(t_cell (*board)[BOARD_SIZE], t_pos *pos, int8_t player)
+{   
+    t_cell *cell = NULL;
+    t_status ret = board_get_cell(board, pos, &cell);
+    if (ret != OKAY) {
+        return (ret);
+    }
+    if (cell->player == player)
         return (OKAY);
     else
         return (INVALIDACTION);
@@ -75,21 +73,33 @@ t_status board_check_isplayer(t_cell (*board)[BOARD_SIZE], t_pos *from)
 
 t_status board_check_leveldiff(t_cell (*board)[BOARD_SIZE], t_pos *from, t_pos *to)
 {
-    int8_t to_level;
-    int8_t from_level;
+    t_cell *from_cell = NULL;
+    t_cell *to_cell = NULL;
 
-    to_level = board[to->y][to->x].level;
-    from_level = board[from->y][from->x].level;
-    if ((to_level - from_level) > 1)
+    t_status ret = board_get_cell(board, from, &from_cell);
+    if (ret != OKAY) {
+        return (ret);
+    }
+    ret = board_get_cell(board, to, &to_cell);
+    if (ret != OKAY) {
+        return (ret);
+    }
+
+    if ((to_cell->level - from_cell->level) > 1)
         return (INVALIDACTION);
     return (OKAY);
 }
 
 t_status board_check_occupancy(t_cell (*board)[BOARD_SIZE], t_pos *pos)
 {
-    if (board[pos->y][pos->x].level == 4)
+    t_cell *cell = NULL;
+    t_status ret = board_get_cell(board, pos, &cell);
+    if (ret != OKAY) {
+        return (ret);
+    }
+    if (cell->level == 4)
         return (DOMED);
-    if (board[pos->y][pos->x].player > -1)
+    if (cell->player > -1)
         return (OCCUPIED);
     return (OKAY);
 }
@@ -127,21 +137,47 @@ t_status board_build_at(t_cell (*board)[BOARD_SIZE], t_pos *pos) {
 }
 
 /// Handles player movement actions
+/// TODO: refactor
 t_status board_player_move(t_cell (*board)[BOARD_SIZE], t_pos *from, t_pos *to, int8_t player) {
-    // check if "from" and "to" are in bounds
+    // check if "from" and "to" are in bounds <- guaranteed by subsequent function
+    t_cell *from_cell = NULL;
+    t_status ret = board_get_cell(board, from, &from_cell);
+    if (ret != OKAY) {
+        return (ret);
+    }
+    t_cell *to_cell = NULL;
+    ret = board_get_cell(board, to, &to_cell);
+    if (ret != OKAY) {
+        return (ret);
+    }
     // check if "from" position == player
+    ret =  board_check_isplayer(board, from, player);
+    if (ret != OKAY) {
+        return (ret);
+    }
+
     // check if "to" is in range
+    ret =  board_check_range(from, to, 1);
+    if (ret != OKAY) {
+        return (ret);
+    }
     // check if "to".level - "from".level is at max 1
+    ret =  board_check_leveldiff(board, from, to);
+    if (ret != OKAY) {
+        return (ret);
+    }
     // check if not occupied or domed -> "to".player < 0 && "to".level < 4
-    // if true
-    //      cell_set_empty(from)
-    //      cell_set_player(to, player)
-    //      check if "to".level == 3
-    //          return WIN
-    //      else
-    //          return OKAY
-    // else
-    //      return SOMETHING
+    ret =  board_check_occupancy(board, to);
+    if (ret != OKAY) {
+        return (ret);
+    }
+    // remove player from current position
+    cell_set_empty(from_cell);
+    // add player to new position
+    cell_set_player(to_cell, player);
+    if (to_cell->level == 3) {
+        return (VICTORY);
+    }
     return (OKAY);
 }
 
@@ -169,7 +205,7 @@ int board_possible_builds_n(t_cell (*board)[BOARD_SIZE], t_pos *from) {
 }
 
 /// check if win
-int boar_check_win(t_cell (*board)[BOARD_SIZE]) {
+int board_check_win(t_cell (*board)[BOARD_SIZE]) {
     // iterates over the cells
     // if level==3 && occupied
     //  return cell.occupied

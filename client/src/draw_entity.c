@@ -119,5 +119,5 @@ void draw_status_bar(char *player_info, char *stage_info, char *additional_info)
         x = (maxx - l) / 2;
     }
     int y = BOARD_SIZE * D_CELL_SIZE + (BOARD_SIZE + 1) * D_MARGIN + 1;
-    mvprintw(y, x, "%s | %s | %s");
+    mvprintw(y, x, "%s | %s | %s", player_info, stage_info, additional_info);
 }
