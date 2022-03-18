@@ -159,7 +159,7 @@ void board_print(t_cell (*board)[BOARD_SIZE]) {
         }
         printf("\n");
     }
-};
+}
 
 #if(DBG_CONTROLS == 1)
 t_status board_debug_build_at(t_cell (*board)[BOARD_SIZE], t_pos *pos) {
@@ -205,13 +205,15 @@ uint8_t board_count_possible_moves(t_cell (*board)[BOARD_SIZE], t_pos *from)
     for (int i = 0; i < 8; i++)
     {
         ret = board_get_cell(board, &buff[i], &cell);
-        if (ret == OKAY)
+        if (ret == OKAY) {
             ret = board_check_occupancy(board, &buff[i]);
-            if (ret == OKAY)
+            if (ret == OKAY) {
                 ret = board_check_leveldiff(board, from, &buff[i]);
-                if (ret == OKAY)
+                if (ret == OKAY) {
                     moves++;
-        
+                }
+            }
+        }
     }
     return (moves);
 }

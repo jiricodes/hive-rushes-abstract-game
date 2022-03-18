@@ -23,6 +23,7 @@ TARGET := santorini-client
 TEST_TARGET:=unittest	
 
 CFLAGS := -I./$(SOURCE_DIR) -O3
+# CFLAGS += -Werror -Wall -Wextra -pedantic
 DBG?=0
 ifeq ($(DBG),1)
 	CFLAGS += -DDBG=1
