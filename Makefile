@@ -7,7 +7,8 @@ SOURCE_FILES=	board.c \
 				player.c \
 				position.c \
 				state.c \
-				status.c
+				status.c \
+				board_resources.c
 
 TEST_FILES:=$(SOURCE_FILES) test.c
 SOURCE_FILES += main.c

@@ -8,6 +8,7 @@
 #include "status.h"
 #include "position.h"
 #include "debug.h"
+#include "board_resources.h"
 
 # define BOARD_SIZE 5
 

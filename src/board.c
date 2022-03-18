@@ -1,32 +1,5 @@
 #include "board.h"
 
-/// holds available resources - L1 | L2 | l3 | DOME
-static int8_t g_resources[4] = {0};
-
-static void reset_resources() {
-    g_resources[0] = 22;
-    g_resources[1] = 18;
-    g_resources[2] = 14;
-    g_resources[3] = 18;
-}
-
-/// assumes `level` in range 0..4
-static t_status get_resource(int8_t level) {
-    if (g_resources[level] > 0) {
-        g_resources[level] -= 1;
-        return (OKAY);
-    }
-    return (NORESOURCE);
-}
-
-
-static int board_has_resource(int8_t level) {
-    if (level < 0 || level > 3) {
-        return (0);
-    }
-    return(g_resources[level] > 0);
-}
-
 void cell_default(t_cell *cell) {
     cell->player = -1;
     cell->level = 0;
@@ -58,7 +31,7 @@ t_status cell_can_build(t_cell *cell) {
     if (cell_domed(cell)) {
         return (DOMED);
     }
-    if (!board_has_resource(cell->level)) {
+    if (!resources_has_level(cell->level)) {
         return (NORESOURCE);
     }
     return (OKAY);
@@ -171,7 +144,7 @@ t_status board_debug_build_at(t_cell (*board)[BOARD_SIZE], t_pos *pos) {
     if (cell_domed(cell)) {
         return (DOMED);
     }
-    get_resource(cell->level);
+    resources_get_one(cell->level);
     cell_build(cell);
     return (OKAY);
 }
@@ -304,7 +277,7 @@ t_status board_player_build(t_cell (*board)[BOARD_SIZE], t_pos *from, t_pos *to,
         return (DOMED);
     }
     // check if we have resources
-    ret = get_resource(cell->level);
+    ret = resources_get_one(cell->level);
     if (ret != OKAY) {
         return (ret);
     }
