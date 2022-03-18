@@ -13,6 +13,13 @@ int8_t position_is_none(t_pos *pos) {
 	return (pos->x == POS_NONE && pos->y == POS_NONE);
 }
 
+/// Helper function to handle pos assignment
+/// assigns `from` values to `to`.
+void position_assign(t_pos *to, t_pos *from) {
+	to->x = from->x;
+	to->y = from->y;
+}
+
 /// If pos is none, then cursor values are assigned
 // if pos is cursor, then none values are assigned
 // else nothing happens

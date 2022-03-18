@@ -104,15 +104,17 @@ void handle_move(t_game_controller *game_controller, t_game_data *game_data) {
 	/// if end -> stage g_end
 	/// Switch to build stage
 	game_controller->stage = G_BUILD;
-	/// clear selection
-	position_none(&game_controller->selected);
+	/// Save cursor in selected, in order to use it as 'from' in build stage
+	position_assign(&game_controller->selected, &game_controller->cursor);
 }
 
 void handle_build(t_game_controller *game_controller, t_game_data *game_data) {
-	t_status ret = board_build_at(game_data->board, &game_controller->cursor);
+	t_status ret = board_player_build(game_data->board, &game_controller->selected, &game_controller->cursor, game_controller->player);
 	if (ret == OKAY) {
 		game_controller->stage = G_MOVE_SELECT;
 		switch_player(&game_controller->player);
+		/// clear selection
+		position_none(&game_controller->selected);
 	}
 }
 

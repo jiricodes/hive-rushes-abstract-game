@@ -239,27 +239,27 @@ t_status board_player_move(t_cell (*board)[BOARD_SIZE], t_pos *from, t_pos *to, 
 }
 
 /// Handles player buiding actions
-t_status board_player_build(t_cell (*board)[BOARD_SIZE], t_pos *to, int8_t player) {
+t_status board_player_build(t_cell (*board)[BOARD_SIZE], t_pos *from, t_pos *to, int8_t player) {
     // check if in bounds
     t_cell *cell = NULL;
     t_status ret = board_get_cell(board, to, &cell);
     if (ret != OKAY) {
         return (ret);
     }
-    ret = board_player_in_range(board, to, player);
+    // check if from  in range to
+    ret = board_check_range(from, to, 1);
     if (ret != OKAY) {
         return (ret);
     }
-    
-    // check if player in range
-    //  -iterate over neighbours and check if any == player
     // check if not occupied / domed
-    // if true
-    //      cell_build(to)
-    //      return OKAY
-    // else
-    //      return SOMEThING
-	return OKAY;
+    if (cell_occupied(cell)) {
+        return (OCCUPIED);
+    }
+    if (cell_domed(cell)) {
+        return (DOMED);
+    }
+    cell_build(cell);
+    return (OKAY);
 }
 
 /// returns number of neighbouring tiles to move to
