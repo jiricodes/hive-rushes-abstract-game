@@ -181,7 +181,7 @@ t_status board_player_move(t_cell (*board)[BOARD_SIZE], t_pos *from, t_pos *to, 
 }
 
 /// Handles player buiding actions
-t_status board_player_build(t_cell (*board)[BOARD_SIZE], t_pos *from, t_pos *to, int8_t player) {
+t_status board_player_build(t_cell (*board)[BOARD_SIZE], t_pos *from, t_pos *to) {
     // check if in bounds
     t_cell *cell = NULL;
     t_status ret = board_get_cell(board, to, &cell);
@@ -207,26 +207,6 @@ t_status board_player_build(t_cell (*board)[BOARD_SIZE], t_pos *from, t_pos *to,
     }
     cell_build(cell);
     return (OKAY);
-}
-
-/// returns number of neighbouring tiles to move to
-//int board_possible_moves_n(t_cell (*board)[BOARD_SIZE], t_pos *from) {
-//    return 0;
-//}
-
-/// returns number of neighbouring tiles to build on
-//int board_possible_builds_n(t_cell (*board)[BOARD_SIZE], t_pos *from) {
-//    return 0;
-//}
-
-/// check if win
-int board_check_win(t_cell (*board)[BOARD_SIZE]) {
-    // iterates over the cells
-    // if level==3 && occupied
-    //  return cell.occupied
-    // else
-    //  return -1
-	return -1;
 }
 
 t_status board_get_cell(t_cell (*board)[BOARD_SIZE], t_pos *pos, t_cell **cell) {

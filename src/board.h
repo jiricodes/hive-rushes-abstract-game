@@ -18,7 +18,7 @@
 void board_reset(t_cell (*board)[BOARD_SIZE]);
 void board_print(t_cell (*board)[BOARD_SIZE]);
 
-t_status board_player_build(t_cell (*board)[BOARD_SIZE], t_pos *from, t_pos *to, int8_t player);
+t_status board_player_build(t_cell (*board)[BOARD_SIZE], t_pos *from, t_pos *to);
 
 t_status board_get_cell(t_cell (*board)[BOARD_SIZE], t_pos *pos, t_cell **cell);
 t_status board_place_player(t_cell (*board)[BOARD_SIZE], t_pos *pos, int8_t player);

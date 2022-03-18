@@ -14,7 +14,7 @@ void position_none(t_pos *pos) {
 
 /// Check if none
 int8_t position_is_none(t_pos *pos) {
-	return (pos->x == POS_NONE && pos->y == POS_NONE);
+	return (pos->x == (int)POS_NONE && pos->y == (int)POS_NONE);
 }
 
 /// Helper function to handle pos assignment

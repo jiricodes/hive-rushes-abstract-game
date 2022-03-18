@@ -38,7 +38,7 @@ t_status player_able_to_build(t_cell (*board)[BOARD_SIZE], t_pos *from)
 	return (LOSS);
 }
 
-static char **get_selected_str(t_pos *pos, char *buffer) {
+static void get_selected_str(t_pos *pos, char *buffer) {
 	if (!position_is_none(pos)) {
     	sprintf(buffer, "SELECTED { x: %d, y: %d }", pos->x, pos->y);
 	}
@@ -70,7 +70,6 @@ void render(t_game_controller *game_controller, t_game_data *game_data) {
 }
 
 void handle_init(t_game_controller *game_controller, t_game_data *game_data) {
-	printf("Handle init\n");
 	game_controller->last_status = board_place_player(game_data->board, &game_controller->cursor, game_controller->player);
 	/// Couldnt place worker for some reason, repeat
 	if (game_controller->last_status != OKAY) {
@@ -152,7 +151,7 @@ void handle_move(t_game_controller *game_controller, t_game_data *game_data) {
 }
 
 void handle_build(t_game_controller *game_controller, t_game_data *game_data) {
-	game_controller->last_status = board_player_build(game_data->board, &game_controller->selected, &game_controller->cursor, game_controller->player);
+	game_controller->last_status = board_player_build(game_data->board, &game_controller->selected, &game_controller->cursor);
 	if (game_controller->last_status == OKAY) {
 		game_controller->stage = G_MOVE_SELECT;
 		switch_player(&game_controller->player);
