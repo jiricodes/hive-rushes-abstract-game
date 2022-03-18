@@ -15,6 +15,7 @@
 -[ ] Readme with instructions
     -[ ] intro
     -[ ] install
+        - [ ] buildessential & libncurses-dev packages
     -[ ] run
     -[ ] controls
 
