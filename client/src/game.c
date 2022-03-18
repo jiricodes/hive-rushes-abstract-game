@@ -28,6 +28,15 @@ int player_able_to_move(t_cell (*board)[BOARD_SIZE], t_player *player)
 	return (LOSS);
 }
 
+int player_able_to_build(t_cell (*board)[BOARD_SIZE], t_pos *from)
+{
+	uint8_t builds = 0;
+	builds += board_count_possible_moves(board, &from);
+	if (builds)
+		return (OKAY);
+	return (LOSS);
+}
+
 static char **get_selected_str(t_pos *pos, char *buffer) {
 	if (!position_is_none(pos)) {
     	sprintf(buffer, "SELECTED { x: %d, y: %d }", pos->x, pos->y);
