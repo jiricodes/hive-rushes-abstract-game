@@ -1,3 +1,5 @@
+![test](https://cf.geekdo-images.com/uelvwnp0nf5nw1kLUovX8A__imagepage/img/qxineTDlaJmpRVmLQjkzVwhGzPA=/fit-in/900x600/filters:no_upscale():strip_icc()/pic2947651.jpg)
+
 # hive-rushes-abstract-game
 
 This is a Hive Helsinki Coding School's rush project of abstract games.
@@ -15,6 +17,7 @@ After that you only have to 'make' to run the program.
 ## Controls
 
 Arrow keys: Move cursor.
+
 Spacebar: Verify selection
 
 ## Resources
