@@ -6,6 +6,8 @@
 # include <string.h>
 
 # include "board.h"
+# include "status.h"
+# include "debug.h"
 
 # define D_CELL_SIZE 8
 # define D_MARGIN 1
@@ -17,5 +19,9 @@ void draw_player_cursor(int x, int y, uint8_t player);
 void draw_player(int x, int y, uint8_t player);
 void draw_check_x_offset();
 void draw_status_bar(char *player_info, char *stage_info, char *additional_info);
+
+#if(DBG_CONTROLS == 1)
+void draw_status_msg(t_status e);
+#endif
 
 #endif

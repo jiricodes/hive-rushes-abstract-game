@@ -11,19 +11,6 @@ void board_reset(t_cell (*board)[BOARD_SIZE]) {
 }
 
 
-t_status board_check_isplayer(t_cell (*board)[BOARD_SIZE], t_pos *pos, int8_t player)
-{   
-    t_cell *cell = NULL;
-    t_status ret = board_get_cell(board, pos, &cell);
-    if (ret != OKAY) {
-        return (ret);
-    }
-    if (cell->player == player)
-        return (OKAY);
-    else
-        return (INVALIDACTION);
-}
-
 t_status board_check_leveldiff(t_cell (*board)[BOARD_SIZE], t_pos *from, t_pos *to)
 {
     t_cell *from_cell = NULL;
@@ -153,9 +140,14 @@ uint8_t board_count_possible_builds(t_cell (*board)[BOARD_SIZE], t_pos *from)
 /// Handles player movement actions
 /// TODO: refactor
 t_status board_player_move(t_cell (*board)[BOARD_SIZE], t_pos *from, t_pos *to, int8_t player) {
+    // check if "to" is in range
+    t_status ret =  position_range_check(from, to, 1);
+    if (ret != OKAY) {
+        return (ret);
+    }
     // check if "from" and "to" are in bounds <- guaranteed by subsequent function
     t_cell *from_cell = NULL;
-    t_status ret = board_get_cell(board, from, &from_cell);
+    ret = board_get_cell(board, from, &from_cell);
     if (ret != OKAY) {
         return (ret);
     }
@@ -165,25 +157,18 @@ t_status board_player_move(t_cell (*board)[BOARD_SIZE], t_pos *from, t_pos *to, 
         return (ret);
     }
     // check if "from" position == player
-    ret =  board_check_isplayer(board, from, player);
-    if (ret != OKAY) {
-        return (ret);
-    }
-
-    // check if "to" is in range
-    ret =  position_range_check(from, to, 1);
-    if (ret != OKAY) {
-        return (ret);
+    if (from_cell->player != player) {
+        return (INVALIDACTION);
     }
     // check if "to".level - "from".level is at max 1
-    ret =  board_check_leveldiff(board, from, to);
-    if (ret != OKAY) {
-        return (ret);
+    if ((to_cell->level - from_cell->level) > 1) {
+        return (INVALIDACTION);
     }
     // check if not occupied or domed -> "to".player < 0 && "to".level < 4
-    ret =  board_check_occupancy(board, to);
-    if (ret != OKAY) {
-        return (ret);
+    if (cell_occupied(to_cell)) {
+        return (OCCUPIED);
+    } else if (cell_domed(to_cell)) {
+        return (DOMED);
     }
     // remove player from current position
     cell_set_empty(from_cell);

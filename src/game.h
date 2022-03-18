@@ -18,6 +18,7 @@ typedef struct s_game_controller {
 	t_pos	cursor;
 	t_pos	selected;
 	uint8_t player;
+	t_status last_status;
 }					t_game_controller;
 
 typedef struct s_game_data {

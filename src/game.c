@@ -6,6 +6,7 @@ void game_controller_init(t_game_controller *game_controller) {
 	position_zero(&game_controller->cursor);
 	game_controller->player = 0;
 	position_none(&game_controller->selected);
+	game_controller->last_status=OKAY;
 }
 
 void game_data_init(t_game_data *data) {
@@ -59,27 +60,28 @@ void render(t_game_controller *game_controller, t_game_data *game_data) {
 		stage_text, \
 		select_text\
 	);
+
+#if(DBG_CONTROLS == 1)
+	draw_status_msg(game_controller->last_status);
+#endif
+
     refresh();
 }
 
 void handle_init(t_game_controller *game_controller, t_game_data *game_data) {
-	t_status ret = OKAY;
 	printf("Handle init\n");
-	ret = board_place_player(game_data->board, &game_controller->cursor, game_controller->player);
+	game_controller->last_status = board_place_player(game_data->board, &game_controller->cursor, game_controller->player);
 	/// Couldnt place worker for some reason, repeat
-	if (ret != OKAY) {
-		printf("Couldn't place worker\n");
+	if (game_controller->last_status != OKAY) {
 		return;
 	}
-	ret = player_place(&game_data->players[game_controller->player], &game_controller->cursor);
-	if (ret != OKAY) {
-		printf("Couldn't place player\n");
+	game_controller->last_status = player_place(&game_data->players[game_controller->player], &game_controller->cursor);
+	if (game_controller->last_status != OKAY) {
 		return;
 	}
-	ret = player_all_placed(&game_data->players[game_controller->player]);
+	game_controller->last_status = player_all_placed(&game_data->players[game_controller->player]);
 	// If current player has free worker, continue placing
-	if (ret == FREEWORKER) {
-		printf("Have free worker\n");
+	if (game_controller->last_status == FREEWORKER) {
 		return;
 	}
 	// Last player placed workers, move to next stage
@@ -92,8 +94,8 @@ void handle_init(t_game_controller *game_controller, t_game_data *game_data) {
 }
 
 void handle_move_select(t_game_controller *game_controller, t_game_data *game_data) {
-	t_status ret = player_able_to_move(game_data->board, &game_data->players[game_controller->player]);
-	if (ret == LOSS) {
+	game_controller->last_status = player_able_to_move(game_data->board, &game_data->players[game_controller->player]);
+	if (game_controller->last_status == LOSS) {
 		game_controller->stage = G_END;
 		switch_player(&game_controller->player);
 		return ;
@@ -104,7 +106,10 @@ void handle_move_select(t_game_controller *game_controller, t_game_data *game_da
 		if (res == 1) {
 			game_controller->stage = G_MOVE;
 		}
+	} else {
+		game_controller->last_status = INVALIDACTION;
 	}
+
 }
 
 void handle_move(t_game_controller *game_controller, t_game_data *game_data) {
@@ -116,18 +121,18 @@ void handle_move(t_game_controller *game_controller, t_game_data *game_data) {
 		}
 	}
 	/// naive
-	t_status ret = board_player_move(\
+	game_controller->last_status = board_player_move(\
 		game_data->board, \
 		&game_controller->selected, \
 		&game_controller->cursor, \
 		game_controller->player);
-	if (ret != OKAY && ret != VICTORY) {
+	if (game_controller->last_status != OKAY && game_controller->last_status != VICTORY) {
 		return ;
-	} else if (ret == VICTORY) {
+	} else if (game_controller->last_status == VICTORY) {
 		game_controller->stage = G_END;
 	}
-	ret = player_move_to(&game_data->players[game_controller->player], &game_controller->selected,&game_controller->cursor);
-	assert(ret == OKAY);
+	game_controller->last_status = player_move_to(&game_data->players[game_controller->player], &game_controller->selected,&game_controller->cursor);
+	assert(game_controller->last_status == OKAY);
 	/// TODO: Add checking for game end!
 	/// if end -> stage g_end
 	/// Switch to build stage
@@ -137,8 +142,8 @@ void handle_move(t_game_controller *game_controller, t_game_data *game_data) {
 	/// Save cursor in selected, in order to use it as 'from' in build stage
 	position_assign(&game_controller->selected, &game_controller->cursor);
 	/// Check if we can even build from here
-	ret = player_able_to_build(game_data->board, &game_controller->cursor);
-	if (ret == LOSS) {
+	game_controller->last_status = player_able_to_build(game_data->board, &game_controller->cursor);
+	if (game_controller->last_status == LOSS) {
 		game_controller->stage = G_END;
 		switch_player(&game_controller->player);
 		return ;
@@ -146,8 +151,8 @@ void handle_move(t_game_controller *game_controller, t_game_data *game_data) {
 }
 
 void handle_build(t_game_controller *game_controller, t_game_data *game_data) {
-	t_status ret = board_player_build(game_data->board, &game_controller->selected, &game_controller->cursor, game_controller->player);
-	if (ret == OKAY) {
+	game_controller->last_status = board_player_build(game_data->board, &game_controller->selected, &game_controller->cursor, game_controller->player);
+	if (game_controller->last_status == OKAY) {
 		game_controller->stage = G_MOVE_SELECT;
 		switch_player(&game_controller->player);
 		/// clear selection

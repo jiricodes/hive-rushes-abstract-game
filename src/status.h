@@ -24,4 +24,6 @@ typedef struct s_status_info {
     char        *info;
 }               t_status_info;
 
+void status_print(t_status e, char *buffer);
+
 #endif

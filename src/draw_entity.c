@@ -106,7 +106,7 @@ void draw_player_cursor(int x, int y, uint8_t player) {
            }
        } 
     }
-    attron(A_STANDOUT);
+    attroff(A_STANDOUT);
     attroff(C_PLAYER(player));
 }
 
@@ -121,3 +121,18 @@ void draw_status_bar(char *player_info, char *stage_info, char *additional_info)
     int y = BOARD_SIZE * D_CELL_SIZE + (BOARD_SIZE + 1) * D_MARGIN + 1;
     mvprintw(y, x, "%s | %s | %s", player_info, stage_info, additional_info);
 }
+
+#if(DBG_CONTROLS == 1)
+void draw_status_msg(t_status e) {
+    char buff[64] = {0};
+    status_print(e, buff);
+    int maxx = getmaxx(stdscr);;
+    int l = strlen(buff);
+    int x = 0;
+    if (l < maxx) {
+        x = (maxx - l) / 2;
+    }
+    int y = BOARD_SIZE * D_CELL_SIZE + (BOARD_SIZE + 1) * D_MARGIN + 1 + 1;
+    mvprintw(y, x, "%s", buff);
+}
+#endif
