@@ -25,6 +25,67 @@ void board_reset(t_cell (*board)[BOARD_SIZE]) {
     }
 }
 
+t_status board_check_bounds(t_pos *position)
+{
+    if (position->x >= BOARD_SIZE)
+        return (OUTOFBOUNDS);
+    if (position->y >= BOARD_SIZE)
+        return (OUTOFBOUNDS);
+    if (position->x < 0)
+        return (OUTOFBOUNDS);
+    if (position->y < 0)
+        return (OUTOFBOUNDS);
+    return (OKAY);
+}
+
+t_status board_check_range(t_pos *from, t_pos *to, int range)
+{
+    int x_diff;
+    int y_diff;
+
+    if (from->x > to->x)
+        x_diff = from->x - to->x;
+    else
+        x_diff = to->x - from->x;
+    if (from->y > to->y)
+        y_diff = from->y - to->y;
+    else
+        y_diff = to->y - from->y;
+    if (y_diff > range || x_diff > range)
+        return (OUTOFRANGE);
+    if (y_diff == 0 && x_diff == 0)
+        return (INVALIDACTION);
+    return (OKAY);
+}
+
+t_status board_check_isplayer(t_cell (*board)[BOARD_SIZE], t_pos *from)
+{
+    if (board[from->y][from->x].player > -1)
+        return (OKAY);
+    else
+        return (INVALIDACTION);
+}
+
+t_status board_check_leveldiff(t_cell (*board)[BOARD_SIZE], t_pos *from, t_pos *to)
+{
+    int8_t to_level;
+    int8_t from_level;
+
+    to_level = board[to->y][to->x].level;
+    from_level = board[from->y][from->x].level;
+    if ((to_level - from_level) > 1)
+        return (INVALIDACTION);
+    return (OKAY);
+}
+
+t_status board_check_occupancy(t_cell (*board)[BOARD_SIZE], t_pos *pos)
+{
+    if (board[pos->y][pos->x].level == 4)
+        return (DOMED);
+    if (board[pos->y][pos->x].player > -1)
+        return (OCCUPIED);
+    return (OKAY);
+}
 
 void board_print(t_cell (*board)[BOARD_SIZE]) {
     for (int r=0; r < BOARD_SIZE; r++) {
