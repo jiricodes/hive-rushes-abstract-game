@@ -60,6 +60,7 @@ void render(t_game_controller *game_controller, t_game_data *game_data) {
 		stage_text, \
 		select_text\
 	);
+	draw_resources();
 
 #if(DBG_CONTROLS == 1)
 	draw_status_msg(game_controller->last_status);

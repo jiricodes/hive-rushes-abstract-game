@@ -38,6 +38,16 @@ static const char *p2_win[] = {
     NULL,
 };
 
+
+static const char *g_digits[] = {
+	"### # ####### ################",
+	"# ###   #  ## ##  #    ## ## #",
+	"# # # ### ###########  #######",
+	"# # # #    #  #  ## #  ## #  #",
+	"############  #######  #######",
+	NULL,
+};
+
 void draw_splash_title(int start_x, int start_y) {
     int x = start_x - 40;
     int y = start_y - 3;
@@ -147,4 +157,19 @@ int draw_splash_screen(int state) {
         }
     }
     return (0);
+}
+
+void draw_digit(int x, int y, int digit) {
+	if (digit < 0 || digit > 9) {
+		return;
+	}
+	attron(A_STANDOUT);
+	for (int row = 0; row < 5; row++) {
+		for (int col = digit * 3; col < (digit + 1) * 3; col ++) {
+			if (g_digits[row][col] != ' ') {
+				mvaddch(y + row, x + col - digit * 3, ' ');
+			}
+		}
+	}
+	attroff(A_STANDOUT);
 }

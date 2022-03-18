@@ -110,6 +110,17 @@ void draw_player_cursor(int x, int y, uint8_t player) {
     attroff(C_PLAYER(player));
 }
 
+void draw_controls() {
+	int maxx = getmaxx(stdscr);;
+	char s[] = "ARROWS - Move cursor | SPACE - Select | ESC - Exit";
+    int l = strlen(s);
+    int x = 0;
+    if (l < maxx) {
+        x = (maxx - l) / 2;
+    }
+    int y = BOARD_SIZE * D_CELL_SIZE + (BOARD_SIZE + 1) * D_MARGIN + 2;
+    mvprintw(y, x, "%s", s);
+}
 
 void draw_status_bar(char *player_info, char *stage_info, char *additional_info) {
     int maxx = getmaxx(stdscr);;
@@ -120,6 +131,19 @@ void draw_status_bar(char *player_info, char *stage_info, char *additional_info)
     }
     int y = BOARD_SIZE * D_CELL_SIZE + (BOARD_SIZE + 1) * D_MARGIN + 1;
     mvprintw(y, x, "%s | %s | %s", player_info, stage_info, additional_info);
+	draw_controls();
+}
+
+void draw_resources() {
+	int y = D_MARGIN;
+	int x = g_x_offset + BOARD_SIZE * D_CELL_SIZE + (BOARD_SIZE + 1) * D_MARGIN + 3;
+	for (int i = 0; i < 4; i ++) {
+		draw_cell(x, y, i + 1);
+		int n = resources_get_n(i);
+		draw_digit(x + D_CELL_SIZE + 2, y + D_CELL_SIZE / 2 - 3, n / 10);
+		draw_digit(x + D_CELL_SIZE + 2 + 4, y + D_CELL_SIZE / 2 - 3, n % 10);
+		y += D_MARGIN + D_CELL_SIZE;
+	}
 }
 
 #if(DBG_CONTROLS == 1)
@@ -132,7 +156,7 @@ void draw_status_msg(t_status e) {
     if (l < maxx) {
         x = (maxx - l) / 2;
     }
-    int y = BOARD_SIZE * D_CELL_SIZE + (BOARD_SIZE + 1) * D_MARGIN + 1 + 1;
+    int y = BOARD_SIZE * D_CELL_SIZE + (BOARD_SIZE + 1) * D_MARGIN + 1 + 3;
     mvprintw(y, x, "%s", buff);
 }
 #endif

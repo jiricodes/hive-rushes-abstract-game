@@ -11,5 +11,6 @@ typedef struct s_draw_dimensions {
 
 
 int draw_splash_screen();
+void draw_digit(int x, int y, int digit);
 
 #endif
