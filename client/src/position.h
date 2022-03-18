@@ -3,6 +3,7 @@
 
 #include "status.h"
 #include <stdio.h>
+#include <inttypes.h>
 
 #define POS_NONE 0xdeadbeef
 

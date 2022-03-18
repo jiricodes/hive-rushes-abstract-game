@@ -1,6 +1,8 @@
 #ifndef PLAYER_H
 # define PLAYER_H
 
+#include <inttypes.h>
+
 #include "position.h"
 #include "status.h"
 

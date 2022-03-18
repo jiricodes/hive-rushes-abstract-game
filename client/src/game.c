@@ -16,6 +16,7 @@ void game_data_init(t_game_data *data) {
 
 void render(t_cell (*board)[BOARD_SIZE], t_pos *cursor, uint8_t player) {
 	clear();
+	draw_check_x_offset();
 	draw_board(board);
 	draw_player_cursor(cursor->x, cursor->y, player);
     refresh();

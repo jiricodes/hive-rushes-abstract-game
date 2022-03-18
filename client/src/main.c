@@ -22,6 +22,8 @@ int main() {
     colors_init();
     curs_set(0);
 
+    // Draw splash
+    draw_splash_screen();
     // Enter game loop
     game_loop();
 

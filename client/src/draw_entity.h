@@ -13,5 +13,6 @@ void draw_cell(int x, int y, uint8_t level);
 void draw_board(t_cell (*board)[BOARD_SIZE]);
 void draw_player_cursor(int x, int y, uint8_t player);
 void draw_player(int x, int y, uint8_t player);
+void draw_check_x_offset();
 
 #endif
