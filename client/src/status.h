@@ -12,6 +12,7 @@ typedef enum e_status {
     OUTOFRANGE,
     FREEWORKER,
     VICTORY,
+    LOSS,
     _UNUSED // add new status above this always ^^^
 
 }           t_status;

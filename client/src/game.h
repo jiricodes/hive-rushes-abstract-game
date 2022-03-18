@@ -28,4 +28,6 @@ int game_loop();
 void game_controller_init(t_game_controller *game_controller);
 void game_data_init(t_game_data *data);
 void handle_init(t_game_controller *game_controller, t_game_data *game_data);
+uint8_t board_count_possible_moves(t_cell (*board)[BOARD_SIZE], t_pos *from);
+uint8_t board_count_possible_builds(t_cell (*board)[BOARD_SIZE], t_pos *from);
 #endif
