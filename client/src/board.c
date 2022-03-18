@@ -183,8 +183,10 @@ t_status board_player_move(t_cell (*board)[BOARD_SIZE], t_pos *from, t_pos *to, 
 
 /// Handles player buiding actions
 /// Assumes range has been checked
-t_status board_player_build(t_cell (*board)[BOARD_SIZE], t_pos *to) {
+t_status board_player_build(t_cell (*board)[BOARD_SIZE], t_pos *to, int8_t player) {
     // check if in bounds
+    // check if player in range
+    //  -iterate over neighbours and check if any == player
     // check if not occupied / domed
     // if true
     //      cell_build(to)

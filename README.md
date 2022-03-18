@@ -2,11 +2,12 @@
 
 ## TODO
 -[ ] board.c
-    -[ ] player move
+    -[x] player move
     -[ ] player build
     -[ ] possible moves
     -[ ] possible builds
-    -[ ] check win condition
+    -[ ] check lose condition
+        -[ ] check if any player lost
 -[ ] position.c
     -[ ] bounds check
     -[ ] range check
