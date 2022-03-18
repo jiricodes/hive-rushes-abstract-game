@@ -1,6 +1,6 @@
 # Custom ##############################
-client/santorini-client
-client/unittest
+santorini-client
+unittest
 .DS_Store
 
 # Rust ################################

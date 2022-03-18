@@ -1,19 +1,65 @@
-.PHONY: all run clean fclean re
+SOURCE_FILES=	board.c \
+				colors.c \
+				controller.c \
+				draw.c \
+				draw_entity.c \
+				game.c \
+				player.c \
+				position.c \
+				state.c \
+				status.c
 
-all:
-	@make -C client
+TEST_FILES:=$(SOURCE_FILES) test.c
+SOURCE_FILES += main.c
 
-run:
-	@make run -C client
 
-test:
-	@make test -C client
+SOURCE_DIR:=src
+SOURCES:=$(addprefix $(SOURCE_DIR)/,$(SOURCE_FILES))
+OBJECTS:=$(SOURCES:.c=.o)
+TEST_SOURCES:=$(addprefix $(SOURCE_DIR)/,$(TEST_FILES))
+TEST_OBJECTS:=$(TEST_SOURCES:.c=.o)
+
+TARGET := santorini-client
+TEST_TARGET:=unittest	
+
+CFLAGS := -I./$(SOURCE_DIR) -O3
+DBG?=0
+ifeq ($(DBG),1)
+	CFLAGS += -DDBG=1
+endif
+
+LDFLAGS := -lncurses
+
+CC:=gcc -std=c11
+
+.PHONY: $(TARGET) all clean fclean re $(TEST_TARGET)
+
+all: test run
+
+build: $(TARGET)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(TARGET): $(OBJECTS)
+	$(CC) $(CFLAGS) -o $@ $(OBJECTS) $(LDFLAGS)
+
+run: $(TARGET)
+	./$(TARGET)
+
+$(TEST_TARGET): $(TEST_OBJECTS)
+	$(CC) $(CFLAGS) -o $(TEST_TARGET) $(TEST_OBJECTS) $(LDFLAGS)
+
+test: $(TEST_TARGET)
+	./$(TEST_TARGET)
 
 clean:
-	@make clean -C client
+	rm -f $(OBJECTS) $(TEST_OBJECTS)
 
-fclean:
-	@make fclean -C client
+fclean: clean
+	rm -f $(TARGET) $(TEST_TARGET)
 
-re:
-	@make re -C client
+re: fclean all
+
+print:
+	echo "$(TEST_FILES)"
