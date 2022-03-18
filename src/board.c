@@ -210,14 +210,14 @@ t_status board_player_build(t_cell (*board)[BOARD_SIZE], t_pos *from, t_pos *to,
 }
 
 /// returns number of neighbouring tiles to move to
-int board_possible_moves_n(t_cell (*board)[BOARD_SIZE], t_pos *from) {
-    return 0;
-}
+//int board_possible_moves_n(t_cell (*board)[BOARD_SIZE], t_pos *from) {
+//    return 0;
+//}
 
 /// returns number of neighbouring tiles to build on
-int board_possible_builds_n(t_cell (*board)[BOARD_SIZE], t_pos *from) {
-    return 0;
-}
+//int board_possible_builds_n(t_cell (*board)[BOARD_SIZE], t_pos *from) {
+//    return 0;
+//}
 
 /// check if win
 int board_check_win(t_cell (*board)[BOARD_SIZE]) {
