@@ -2,7 +2,7 @@
 
 # hive-rushes-abstract-game
 
-This is a Hive Helsinki Coding School's rush project of abstract games.
+This is a Hive Helsinki Coding School's rush project of abstract games. Project is based on the board game called Santorini and implementing in in C language.
 
 ## About the Game
 
