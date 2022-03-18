@@ -8,6 +8,7 @@
 #include "controller.h"
 #include "position.h"
 #include "player.h"
+#include "debug.h"
 #include <stdio.h>
 
 #define MAX_PLAYERS 2

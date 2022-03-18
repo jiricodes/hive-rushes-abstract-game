@@ -227,7 +227,13 @@ int game_loop() {
 				handle_select(&game_controller, &game_data);
 				break;
 			}
- 
+#if(DBG_CONTROLS == 1)
+			case 'B':
+			case 'b': {
+				board_debug_build_at(game_data.board, &game_controller.cursor);
+				break;
+			}
+#endif
 			default:
 				break;
 		}

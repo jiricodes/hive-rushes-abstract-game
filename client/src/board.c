@@ -120,14 +120,12 @@ void board_print(t_cell (*board)[BOARD_SIZE]) {
     }
 };
 
-t_status board_build_at(t_cell (*board)[BOARD_SIZE], t_pos *pos) {
+#if(DBG_CONTROLS == 1)
+t_status board_debug_build_at(t_cell (*board)[BOARD_SIZE], t_pos *pos) {
 	t_cell *cell = NULL;
     t_status ret = board_get_cell(board, pos, &cell);
     if (ret != OKAY) {
         return (ret);
-    }
-    if (cell_occupied(cell)) {
-        return (OCCUPIED);
     }
     if (cell_domed(cell)) {
         return (DOMED);
@@ -135,6 +133,7 @@ t_status board_build_at(t_cell (*board)[BOARD_SIZE], t_pos *pos) {
     cell_build(cell);
     return (OKAY);
 }
+#endif
 
 t_status board_player_in_range(t_cell (*board)[BOARD_SIZE], t_pos *from, int8_t player) {
     t_pos buff[8] = {0};

@@ -6,27 +6,27 @@
 
 static void test_board() {
     printf("Testing Board:\n");
-    t_cell      board[BOARD_SIZE][BOARD_SIZE];
-    t_status    ret;
-    t_cell      *cell = NULL;
-    t_pos       pos;
-    board_reset(board);
-    position_zero(&pos);
-    ret = board_get_cell(board, &pos, &cell);
-    assert(ret == OKAY);
-    fflush(stdout);
-    assert(cell->level == 0 && cell->player == -1);
-    ret = board_build_at(board, &pos);
-    assert(ret == OKAY);
-    assert(cell->level == 1 && cell->player == -1);
-    ret = board_place_player(board, &pos, 1);
-    assert(ret == OKAY);
-    assert(cell->level == 1 && cell->player == 1);
-    ret = board_place_player(board, &pos, 1);
-    assert(ret == OCCUPIED);
-    pos.x = -5;
-    ret = board_place_player(board, &pos, 1);
-    assert(ret == OUTOFBOUNDS);
+    // t_cell      board[BOARD_SIZE][BOARD_SIZE];
+    // t_status    ret;
+    // t_cell      *cell = NULL;
+    // t_pos       pos;
+    // board_reset(board);
+    // position_zero(&pos);
+    // ret = board_get_cell(board, &pos, &cell);
+    // assert(ret == OKAY);
+    // fflush(stdout);
+    // assert(cell->level == 0 && cell->player == -1);
+    // ret = board_build_at(board, &pos);
+    // assert(ret == OKAY);
+    // assert(cell->level == 1 && cell->player == -1);
+    // ret = board_place_player(board, &pos, 1);
+    // assert(ret == OKAY);
+    // assert(cell->level == 1 && cell->player == 1);
+    // ret = board_place_player(board, &pos, 1);
+    // assert(ret == OCCUPIED);
+    // pos.x = -5;
+    // ret = board_place_player(board, &pos, 1);
+    // assert(ret == OUTOFBOUNDS);
     printf("Done\n");
 }
 
@@ -92,6 +92,7 @@ static void test_position() {
 
 int main() {
     printf("Starting Unittests\n");
+    printf("DBG = %d\n", DBG_CONTROLS);
     // test_board();
     // test_handle_init();
     // test_text_getters();

@@ -20,9 +20,14 @@ TEST_SOURCES:=$(addprefix $(SOURCE_DIR)/,$(TEST_FILES))
 TEST_OBJECTS:=$(TEST_SOURCES:.c=.o)
 
 TARGET := santorini-client
-TEST_TARGET:=unittest
+TEST_TARGET:=unittest	
 
 CFLAGS := -I./$(SOURCE_DIR) -O3
+DBG?=0
+ifeq ($(DBG),1)
+	CFLAGS += -DDBG=1
+endif
+
 LDFLAGS := -lncurses
 
 CC:=gcc -std=c11
