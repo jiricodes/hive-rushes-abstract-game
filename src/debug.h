@@ -7,4 +7,8 @@
 # define DBG_CONTROLS 1
 #endif
 
+#ifndef __APPLE__
+# define __APPLE__ 0
+#endif
+
 #endif
