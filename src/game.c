@@ -120,7 +120,6 @@ void handle_move(t_game_controller *game_controller, t_game_data *game_data) {
 			return ;
 		}
 	}
-	/// naive
 	game_controller->last_status = board_player_move(\
 		game_data->board, \
 		&game_controller->selected, \
@@ -133,8 +132,6 @@ void handle_move(t_game_controller *game_controller, t_game_data *game_data) {
 	}
 	game_controller->last_status = player_move_to(&game_data->players[game_controller->player], &game_controller->selected,&game_controller->cursor);
 	assert(game_controller->last_status == OKAY);
-	/// TODO: Add checking for game end!
-	/// if end -> stage g_end
 	/// Switch to build stage
 	if (game_controller->stage != G_END) {
 		game_controller->stage = G_BUILD;
@@ -181,29 +178,6 @@ void handle_select(t_game_controller *game_controller, t_game_data *game_data) {
 	} else {
 		printf("GAME END\n");
 	}
-	// switch (game_controller->stage) {
-	// 	case G_INIT: {
-	// 		handle_init(game_controller, game_data);
-	// 		break;
-	// 	}
-	// 	case G_MOVE_SELECT: {
-	// 		//select player's worker to move
-	// 		handle_move_select(game_controller, game_data);
-	// 		break;
-	// 	}
-	// 	case G_MOVE: {
-	// 		handle_move(game_controller, game_data);
-	// 		break;
-	// 	}
-	// 	case G_BUILD: {
-	// 		handle_build(game_controller, game_data);
-	// 		break;
-	// 	}
-	// 	default: {
-	// 		printf("GAME END\n");
-	// 		break;
-	// 	}
-	// }
 }
 
 int game_loop() {
