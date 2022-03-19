@@ -159,12 +159,16 @@ int draw_splash_screen(int state) {
     return (0);
 }
 
+/// Draws digit in area (x, y) -> (x + 3, y 5);
 void draw_digit(int x, int y, int digit) {
 	if (digit < 0 || digit > 9) {
 		return;
 	}
 	attron(A_STANDOUT);
+
 	for (int row = 0; row < 5; row++) {
+        /// the digit starts at position digit * 3
+        /// and ends on (digit + 1) * 3
 		for (int col = digit * 3; col < (digit + 1) * 3; col ++) {
 			if (g_digits[row][col] != ' ') {
 				mvaddch(y + row, x + col - digit * 3, ' ');

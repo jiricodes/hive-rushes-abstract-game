@@ -160,30 +160,50 @@ void handle_build(t_game_controller *game_controller, t_game_data *game_data) {
 	}
 }
 
+/// Our fuctions that handle stages have exactly same arguments
+/// so we can have this typedef
+/// If we would like to introduce a variate of parameters
+/// we would need to adapt it for variadic arguments instead.
+/// typedef void (t_handle_stage)(...);
+typedef	void (t_handle_stage)(t_game_controller *game_controller, t_game_data *game_data);
+
+static t_handle_stage		*g_stage_handlers[] = {
+	&handle_init,
+	&handle_move_select,
+	&handle_move,
+	&handle_build	
+};
+
+/// Would be nicer with dispatcher
 void handle_select(t_game_controller *game_controller, t_game_data *game_data) {
-	switch (game_controller->stage) {
-		case G_INIT: {
-			handle_init(game_controller, game_data);
-			break;
-		}
-		case G_MOVE_SELECT: {
-			//select player's worker to move
-			handle_move_select(game_controller, game_data);
-			break;
-		}
-		case G_MOVE: {
-			handle_move(game_controller, game_data);
-			break;
-		}
-		case G_BUILD: {
-			handle_build(game_controller, game_data);
-			break;
-		}
-		default: {
-			printf("GAME END\n");
-			break;
-		}
+	if (game_controller->stage >= 0 && game_controller->stage < G_END) {
+		g_stage_handlers[game_controller->stage](game_controller, game_data);
+	} else {
+		printf("GAME END\n");
 	}
+	// switch (game_controller->stage) {
+	// 	case G_INIT: {
+	// 		handle_init(game_controller, game_data);
+	// 		break;
+	// 	}
+	// 	case G_MOVE_SELECT: {
+	// 		//select player's worker to move
+	// 		handle_move_select(game_controller, game_data);
+	// 		break;
+	// 	}
+	// 	case G_MOVE: {
+	// 		handle_move(game_controller, game_data);
+	// 		break;
+	// 	}
+	// 	case G_BUILD: {
+	// 		handle_build(game_controller, game_data);
+	// 		break;
+	// 	}
+	// 	default: {
+	// 		printf("GAME END\n");
+	// 		break;
+	// 	}
+	// }
 }
 
 int game_loop() {
