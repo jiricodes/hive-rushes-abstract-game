@@ -53,6 +53,7 @@ Escape: EXIT
 ## Contributors
 
 [Jiri Novotny](https://www.jiricodes.com/)
+
 [Lauri Salmi](https://github.com/lasalmi)
 
 ## License
